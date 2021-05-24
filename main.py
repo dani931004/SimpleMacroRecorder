@@ -2,7 +2,7 @@ import pyautogui as pa
 from time import sleep
 import mouse_recorder as mr
 
-# Record number of positions where mouse is moved
+# Record number of positions where mouse is clicked or scrolled
 def record():
     positions = []
     print('Starting after 3 sec...')
@@ -13,8 +13,8 @@ def record():
     print('1...')
     sleep(1)
     print('Recording...')
-    # Record mouse movements
-    mode = 'on_move'
+    # Record mouse clicks and scrolls
+    mode = 'all'
     mr.play_listener(mode)
     print('Record stopped...')
     with open ('mouse_log.txt', 'r') as f:
@@ -76,4 +76,5 @@ def play_mouse():
 
 # mode = 'on_move'
 # mr.play_listener(mode)
-play_mouse()
+# play_mouse()
+record()
