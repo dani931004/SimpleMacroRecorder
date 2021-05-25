@@ -1,0 +1,1 @@
+bash /home/dani/push.sh
