@@ -59,5 +59,5 @@ def play():
     return 'Complete!'
 
 
-# record()
-play()
+record()
+# play()
