@@ -1,6 +1,6 @@
 import pyautogui as pa
 from time import sleep
-import mouse_recorder as mr
+
 
 
 # Record number of positions where mouse is clicked or scrolled
@@ -13,9 +13,9 @@ def record():
     print('1...')
     sleep(1)
     print('Recording...')
+    from mouse_recorder import play_recorder
     # Record mouse clicks and scrolls
-    # on_click = mc.play_clicker()
-    mr.play_recorder()
+    play_recorder()
     print('Record stopped...')
     print('Recording done...')
     return 'Finished!'
@@ -52,12 +52,8 @@ def play():
                 pa.scroll(s,x=int(sx),y=int(sy))
                 sleep(float(speed))
                 print('Scroll')
-        # 
-        # for i in range(len(buttons)):
-        #         pa.click(x=int(x[i]),y=y[i],button=buttons[i])
-        #         sleep(float(speed))
     return 'Complete!'
 
 
-record()
-# play()
+# record()
+play()

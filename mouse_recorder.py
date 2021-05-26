@@ -1,11 +1,9 @@
 
 from pynput.mouse import Listener
 import logging
+fmode ='w'                #input('Enter filemode:\n')
 # format='%(asctime)s: %(message)s'
-logging.basicConfig(filename="mouse_log.txt", filemode='w', level=logging.DEBUG, format='%(message)s')
-
-# def on_move(x, y):
-#     logging.info("{0}|{1}".format(x, y))
+logging.basicConfig(filename="mouse_log.txt", filemode=fmode, level=logging.DEBUG, format='%(message)s')
 
 def on_click(x, y, button, pressed):
     if pressed:
@@ -18,4 +16,3 @@ def play_recorder():
     # on_move=on_move, on_click=on_click, on_scroll=on_scroll
     with Listener(on_click=on_click, on_scroll=on_scroll) as listener:
         listener.join()
-

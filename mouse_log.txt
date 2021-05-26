@@ -1,3 +1,12 @@
-757,722,Button.left
-834,622,Button.right
-656,622,Button.left
+796,725,Button.right
+796,725,Button.left
+796,725,Button.right
+796,725,Button.left
+810,698,Button.right
+637,632,Button.left
+440,625,Button.right
+972,660,Button.left
+1220,596,Button.right
+966,650,Button.left
+770,667,Button.right
+650,702,Button.left
