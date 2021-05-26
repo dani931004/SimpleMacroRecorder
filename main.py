@@ -1,5 +1,6 @@
 import pyautogui as pa
 from time import sleep
+from pynput import keyboard
 
 
 
@@ -15,7 +16,7 @@ def record():
     print('Recording...')
     from mouse_recorder import play_recorder
     # Record mouse clicks and scrolls
-    play_recorder()
+    play = play_recorder()
     print('Record stopped...')
     print('Recording done...')
     return 'Finished!'
@@ -55,5 +56,5 @@ def play():
     return 'Complete!'
 
 
-# record()
-play()
+record()
+# play()
