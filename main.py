@@ -53,8 +53,16 @@ def play():
                 pa.scroll(s,x=int(sx),y=int(sy))
                 sleep(float(speed))
                 print('Scroll')
+            elif 'Press' in line:
+                p = line.split('"')
+                press = "'"+p[1].replace('Key.','').replace("'","")+"'"
+                pa.press(press)
+            elif 'KeyUp' in line:
+                k = line.split('"')
+                keyup = "'"+k[1].replace('Key.','').replace("'","")+"'"
+                pa.keyUp(keyup)
     return 'Complete!'
 
 
-record()
-# play()
+# record()
+play()
