@@ -55,12 +55,14 @@ def play():
                 print('Scroll')
             elif 'Press' in line:
                 p = line.split('"')
-                press = "'"+p[1].replace('Key.','').replace("'","")+"'"
+                press = p[1].replace('Key.','').replace("'","")
                 pa.press(press)
+                print('Press',str(press))
             elif 'KeyUp' in line:
                 k = line.split('"')
-                keyup = "'"+k[1].replace('Key.','').replace("'","")+"'"
+                keyup = k[1].replace('Key.','').replace("'","")
                 pa.keyUp(keyup)
+                print('KeyUp',str(keyup))
     return 'Complete!'
 
 
