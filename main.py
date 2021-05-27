@@ -57,12 +57,12 @@ def play():
                 p = line.split('"')
                 press = p[1].replace('Key.','').replace("'","")
                 pa.press(press)
-                print('Press',str(press))
+                print('Press',press)
             elif 'KeyUp' in line:
                 k = line.split('"')
                 keyup = k[1].replace('Key.','').replace("'","")
                 pa.keyUp(keyup)
-                print('KeyUp',str(keyup))
+                print('KeyUp',keyup)
     return 'Complete!'
 
 

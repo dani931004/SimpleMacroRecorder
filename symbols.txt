@@ -1,0 +1,192 @@
+	,ok
+
+,ok
+
+,no
+ ,ok
+!,This is ! symbol
+",ok
+#,ok
+$,k
+%,k
+&,k
+',this is one more ' or "
+(,this is shift
+),shift and left click
+*,k
++,ok
+,,k
+-,k
+.,k
+/,k
+0,k
+1,is 1 not numpad1
+2,k
+3,again 3
+4,again 4
+5,again 5
+6,k
+7,again 7
+8,k
+9,k
+:,k
+;,again ;
+<,k
+=,again +=
+>,again >.
+?,again ?/
+@,again shift+2
+[,ok
+\,again |\
+],ok
+^,again shift+6
+_,again shift+_-
+`,ok
+a,k
+b,k
+c,ok
+d,k
+e,k
+f,k
+g,k
+h,k
+i,k
+j,k
+k,k
+l,k
+m,k
+n,k
+o,k
+p,k
+q,k
+r,k
+s,k
+t,k
+u,k
+v,k
+w,k
+x,k
+y,k
+z,k
+{,again {[
+|,again \|
+},again }]
+~,again `~
+accept,no
+add,ok
+alt,ok
+altleft,k
+altright,k
+apps,ok
+backspace,ok
+browserback,no
+browserfavorites,no
+browserforward,nothing
+browserhome,no
+browserrefresh,no
+browsersearch,no
+browserstop,no
+capslock,YES
+clear,NO
+convert,no
+ctrl,ok
+ctrlleft,again ctrl
+ctrlright,ok
+decimal,ok
+del,ok
+delete,again del
+divide,ok
+down,ok
+end,ok
+enter,again enter
+esc,ok
+escape,again esc
+execute,no
+f1,ok
+f10,ok
+f11,ok
+f12,ok
+f13,no
+f14,no
+f15,no
+f16,no
+f17,no
+f18,no
+f19,no
+f2,ok
+f20,no
+f21,no
+f22,no
+f23,no
+f24,no
+f3,ok
+f4,ok
+f5,ok
+f6,ok
+f7,ok
+f8,ok
+f9,ok
+final,no
+fn,no
+hanguel,no
+hangul,no
+hanja,no
+help,no
+home,ok
+insert,ok
+junja,no
+kana,no
+kanji,no
+launchapp1,no
+launchapp2,no
+launchmail,no
+launchmediaselect,no
+left,ok
+modechange,no
+multiply,ok
+nexttrack,no
+nonconvert,no
+num0,ok
+num1,ok
+num2,ok
+num3,3no
+num4,ok
+num5,ok
+num6,ok
+num7,ok
+num8,ok
+num9,ok
+numlock,ok
+pagedown,ok
+pageup,ok
+pause,ok
+pgdn,ok
+pgup,no
+playpause,no
+prevtrack,no
+print,ok
+printscreen,again prtscr
+prntscrn,again prtscr
+prtsc,again prtscr
+prtscr,again printscr
+return,no
+right,ok
+scrolllock,ok
+select,no
+separator,no
+shift,no
+shiftleft,no
+shiftright,ok
+sleep,no
+space,no
+stop,no
+subtract,ok
+tab,Tab
+up,ok
+volumedown,no
+volumemute,no
+volumeup,no
+yen,no
+command,no
+option,no
+optionleft,no
