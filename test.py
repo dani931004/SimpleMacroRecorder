@@ -36,5 +36,5 @@ print('Playing...')
 with open('symbols.txt', 'r') as f:
     a = f.readlines()
     for line in a:
-        if 'no' in line:
+        if 'yes' in line:
             print(line)
