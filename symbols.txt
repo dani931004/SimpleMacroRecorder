@@ -1,9 +1,7 @@
-	,ok
-
-,ok
-
-,no
- ,ok
+\t,ok
+\n,ok
+\r,ok
+Key.space,ok
 !,This is ! symbol
 ",ok
 #,ok

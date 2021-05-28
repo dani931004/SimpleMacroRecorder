@@ -2,6 +2,7 @@ import pyautogui as pa
 from time import sleep
 from pynput import keyboard
 import logging
+# logging.basicConfig(filename="symbols2.txt", filemode='w', level=logging.DEBUG, format='%(message)s')
 
 
 symbols = ['\t', '\n', '\r', ' ', '!', '"', '#', '$', '%', '&', "'", '(',
@@ -33,8 +34,13 @@ sleep(1)
 print('1...')
 sleep(1)
 print('Playing...')
+symbols2 = []
 with open('symbols.txt', 'r') as f:
     a = f.readlines()
     for line in a:
-        if 'yes' in line:
-            print(line)
+        l = line.split(',')
+        if 'YES' in l[1] or 'ok' in l[1] or 'k' in l[1]:
+            symbols2.append(l[0])
+            print(l[0],l[1])
+            logging.info(l[0])
+    
