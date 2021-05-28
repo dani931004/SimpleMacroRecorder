@@ -56,16 +56,25 @@ def play():
                 print('Scroll')
             elif 'Press' in line:
                 line = line.replace('Press:','').replace("'","").replace('\n','')
-                if "shift" in line:
-                    press = line.replace('Key.','').replace('"','').replace('_','').replace('\n','').replace(' ','')
-                    press = press+'left'
+                if "shift_r" in line:
+                    press = 'shiftright'
                     pa.press(press)
                     print('IF')
                     print('Press',press)
-                elif '""""' in line:
+                elif '""' in line:
                     press = '"'
                     print('ELIF')
                     pa.press(press)
+                    print('Press',press)
+                elif 'ctrl_r' in line:
+                    press = "ctrlright"
+                    pa.press(press)
+                    print('ELIF')
+                    print('Press',press)
+                elif 'alt_r' in line:
+                    press = "altright"
+                    pa.press(press)
+                    print('ELIF')
                     print('Press',press)
                 else:
                     press = line.replace('"',"").replace(' ','').replace('Key.','').replace('_','')
