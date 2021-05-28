@@ -23,7 +23,6 @@ def record():
 
 # Play recorded positions
 def play():
-    speed = input('Please enter the speed between clicks in sec...')
     print('Waiting 3 sec...')
     print('3...')
     sleep(1)
@@ -39,20 +38,22 @@ def play():
         for line in a:
             if 'Button' in line:
                 l = line.split(',')
+                speed = l[3]
+                sleep(float(speed))
                 dx = l[0]
                 dy = l[1]
                 b = l[2].replace('Button.','').replace('\n','')
                 buttons = b
                 pa.click(x=int(dx), y=int(dy), button=buttons)
-                sleep(float(speed))
                 print('Click')
             elif 'scrollh' in line:
                 ll = line.split(',')
+                speed = ll[4]
+                sleep(float(speed))
                 s = ll[3].replace('\n','')
                 sx = ll[0]
                 sy = ll[1]
                 pa.scroll(s,x=int(sx),y=int(sy))
-                sleep(float(speed))
                 print('Scroll')
             elif 'Press' in line:
                 line = line.replace('Press:','').replace("'","").replace('\n','')
@@ -81,11 +82,6 @@ def play():
                     pa.press(press)
                     print('ELSE')
                     print('Press',press)
-            elif 'KeyUp' in line:
-                k = line.split(':')
-                keyup = k[1].replace('Key.','').replace("'","").replace('_','').replace(' ','')
-                pa.keyUp(keyup)
-                print('KeyUp',keyup)
     return 'Complete!'
 
 
