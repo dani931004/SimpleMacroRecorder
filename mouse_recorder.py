@@ -23,8 +23,6 @@ def on_release(key):
         # Stop listener
         mouse_listener.stop()
         return sys.exit()
-    else:
-        logging.info('KeyUp:"{0}"'.format(key))
     
     
 def on_press(key):
@@ -33,7 +31,8 @@ def on_press(key):
         mouse_listener.stop()
         return sys.exit()
     else:
-        logging.info('Press:"{0}" '.format(key))
+        print(key)
+        logging.info('Press:{0}'.format(key))
     
 
 

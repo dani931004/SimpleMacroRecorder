@@ -35,6 +35,7 @@ def play():
     # open the mouse log file and take all x,y and buttons from it
     with open('mouse_log.txt', 'r') as f:
         a = f.readlines()
+        case = '"'
         for line in a:
             if 'Button' in line:
                 l = line.split(',')
@@ -54,13 +55,26 @@ def play():
                 sleep(float(speed))
                 print('Scroll')
             elif 'Press' in line:
-                p = line.split('"')
-                press = p[1].replace('Key.','').replace("'","")
-                pa.press(press)
-                print('Press',press)
+                line = line.replace('Press:','').replace("'","").replace('\n','')
+                if "shift" in line:
+                    press = line.replace('Key.','').replace('"','').replace('_','').replace('\n','').replace(' ','')
+                    press = press+'left'
+                    pa.press(press)
+                    print('IF')
+                    print('Press',press)
+                elif '""""' in line:
+                    press = '"'
+                    print('ELIF')
+                    pa.press(press)
+                    print('Press',press)
+                else:
+                    press = line.replace('"',"").replace(' ','').replace('Key.','').replace('_','')
+                    pa.press(press)
+                    print('ELSE')
+                    print('Press',press)
             elif 'KeyUp' in line:
-                k = line.split('"')
-                keyup = k[1].replace('Key.','').replace("'","")
+                k = line.split(':')
+                keyup = k[1].replace('Key.','').replace("'","").replace('_','').replace(' ','')
                 pa.keyUp(keyup)
                 print('KeyUp',keyup)
     return 'Complete!'
