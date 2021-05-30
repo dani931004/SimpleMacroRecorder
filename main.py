@@ -14,7 +14,7 @@ def record():
     print('1...')
     sleep(1)
     print('Recording...')
-    from mouse_recorder import play_recorder
+    from recorder import play_recorder
     # Record mouse clicks and scrolls
     play = play_recorder()
     print('Record stopped...')
@@ -85,5 +85,5 @@ def play():
     return 'Complete!'
 
 
-# record()
-play()
+record()
+# play()
