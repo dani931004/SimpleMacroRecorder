@@ -1,4 +1,4 @@
-# import pyautogui as pa
+import pyautogui as pa
 from time import sleep
 import tkinter
 from tkinter import filedialog as fd
