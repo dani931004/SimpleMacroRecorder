@@ -59,8 +59,7 @@ def play():
                 line = line.split(',')
                 speed = line[1]
                 sleep(float(speed))
-                line0 = line[0].replace('Press:', '').replace("'", "")
-                line0 = line[0].replace('\n', '')
+                line0 = line[0].replace('Press:', '').replace("'", "").replace('\n', '')
                 if "shift_r" in line0:
                     press = 'shiftright'
                     pa.press(press)
