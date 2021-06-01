@@ -98,7 +98,7 @@ def play():
 
 class PopupWindow():
     def __init__(self, root):
-        #self.root = root
+        # self.root = root
         window = tk.Toplevel(root)
         window.geometry('280x445+540+165')
         text = tk.Text(window)
@@ -112,11 +112,10 @@ class PopupWindow():
         f = fd.askopenfile(filetypes=filetypes)
         # read the text file and show its content on the Text
         text.insert('1.0', f.readlines())
-        
-        
-            
+
         button_close = tk.Button(window, text="Close", command=window.destroy)
         button_close.pack(fill='x')
+
 
 class App():
 
@@ -124,19 +123,19 @@ class App():
         self.root = tk.Tk()
         self.root.title('Simple Macro Recorder')
         self.root.geometry('300x185+530+313')
-        
+
         label = tk.Label(self.root, text='To stop recording press(F12)...')
         label.pack(side='top')
         label2 = tk.Label(self.root, text='''Upper left corner with mouse to stop Play...''')
         label2.pack(side='top')
-        
+
         def clock():
             hour = strftime('%I')
             minute = strftime('%M')
-            second = strftime('%S')           
-            clock_label.config(text=hour + ':' + minute + ':'+ second)
-            clock_label.after(1000,clock)
-        
+            second = strftime('%S')
+            clock_label.config(text=hour + ':' + minute + ':' + second)
+            clock_label.after(1000, clock)
+
         clock_label = tk.Label(self.root, text="")
         clock_label.pack(side='top')
         clock()
@@ -145,7 +144,7 @@ class App():
 
         button_record = tk.Button(self.root, text="Record", command=record)
         button_record.pack(fill='x')
-        
+
         button_play = tk.Button(self.root, text="Play", command=play)
         button_play.pack(fill='x')
 
@@ -157,13 +156,8 @@ class App():
 
     def popup_window(self):
         PopupWindow(self.root)
-        
-    
-    
-    
+
 
 # --- main ---
-
 app = App()
 app.run()
-

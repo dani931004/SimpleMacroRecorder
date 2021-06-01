@@ -5,9 +5,10 @@ from tkinter import filedialog as fd
 
 # --- classes ---
 
+
 class PopupWindow():
     def __init__(self, root):
-        #self.root = root
+        # self.root = root
         window = tk.Toplevel(root)
         text = tk.Text(window)
         text.pack(side="top", fill="x")
@@ -20,11 +21,9 @@ class PopupWindow():
         f = fd.askopenfile(filetypes=filetypes)
         # read the text file and show its content on the Text
         text.insert('1.0', f.readlines())
-        
-        
-            
         button_close = tk.Button(window, text="Close", command=window.destroy)
         button_close.pack(fill='x')
+
 
 class App():
 
@@ -48,11 +47,8 @@ class App():
 
     def popup_showinfo(self):
         showinfo("ShowInfo", "Hello World!")
-    
-   
-    
+
 
 # --- main ---
-
 app = App()
 app.run()
