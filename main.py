@@ -1,5 +1,5 @@
 import pyautogui as pa
-from time import sleep
+from time import sleep, strftime
 import tkinter as tk
 from tkinter import filedialog as fd
 
@@ -123,10 +123,20 @@ class App():
     def __init__(self):
         self.root = tk.Tk()
         self.root.title('Simple Macro Recorder')
-        self.root.geometry('300x140+530+313')
+        self.root.geometry('300x165+530+313')
         
         label = tk.Label(self.root, text='To stop recording press(F12)...').pack(side='top')
         
+        def clock():
+            hour = strftime('%I')
+            minute = strftime('%M')
+            second = strftime('%S')           
+            clock_label.config(text=hour + ':' + minute + ':'+ second)
+            clock_label.after(1000,clock)
+        
+        clock_label = tk.Label(self.root, text="")
+        clock_label.pack(side='top')
+        clock()
         button_open_log = tk.Button(self.root, text="Open log file", command=self.popup_window)
         button_open_log.pack(fill='x')
 
@@ -144,11 +154,9 @@ class App():
 
     def popup_window(self):
         PopupWindow(self.root)
-
-    def popup_showinfo(self):
-        showinfo("ShowInfo", "Hello World!")
+        
     
-   
+    
     
 
 # --- main ---
