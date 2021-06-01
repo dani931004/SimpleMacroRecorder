@@ -123,9 +123,12 @@ class App():
     def __init__(self):
         self.root = tk.Tk()
         self.root.title('Simple Macro Recorder')
-        self.root.geometry('300x165+530+313')
+        self.root.geometry('300x185+530+313')
         
-        label = tk.Label(self.root, text='To stop recording press(F12)...').pack(side='top')
+        label = tk.Label(self.root, text='To stop recording press(F12)...')
+        label.pack(side='top')
+        label2 = tk.Label(self.root, text='''Upper left corner with mouse to stop Play...''')
+        label2.pack(side='top')
         
         def clock():
             hour = strftime('%I')
