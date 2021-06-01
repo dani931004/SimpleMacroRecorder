@@ -1,6 +1,6 @@
 import pyautogui as pa
 from time import sleep
-import tkinter
+import tkinter as tk
 from tkinter import filedialog as fd
 
 
@@ -81,7 +81,7 @@ def play():
                     print('ELIF')
                     print('Press', press)
                 elif 'cmd' in line0:
-                    press = "win"
+                    press = "winleft"
                     pa.press(press)
                     print('ELIF')
                     print('Press', press)
@@ -94,31 +94,65 @@ def play():
     return 'Complete!'
 
 
-def open_text_file():
-    # file type
-    filetypes = (
-        ('text files', '*.txt'),
-        ('All files', '*.*')
-    )
-    # show the open file dialog
-    f = fd.askopenfile(filetypes=filetypes)
-    # read the text file and show its content on the Text
-    text.insert('1.0', f.read())
-root = tkinter.Tk()
-root.title('Simple Macro Recorder')
+# --- classes ---
 
-text = tkinter.Text(root)
-text.pack(side="top", fill="both", padx=10, pady=10)
-label = tkinter.Label(root, text='To stop recording press(F12)...').pack(side='top')
-button1 = tkinter.Button(root,
-                            text='Open log file!',
-                            command=open_text_file).pack(side = 'top', fill="both")
-button2 = tkinter.Button(root,
-                            text='Play recordings!',
-                            command=play).pack(side = 'bottom', fill="both")
-button3 = tkinter.Button(root,
-                            text='Record!',
-                            command=record).pack(side = 'top', fill="both")
+class PopupWindow():
+    def __init__(self, root):
+        #self.root = root
+        window = tk.Toplevel(root)
+        window.geometry('280x445+540+165')
+        text = tk.Text(window)
+        text.pack(side="top", fill="x")
+        # file type
+        filetypes = (
+            ('text files', '*.txt'),
+            ('All files', '*.*')
+        )
+        # show the open file dialog
+        f = fd.askopenfile(filetypes=filetypes)
+        # read the text file and show its content on the Text
+        text.insert('1.0', f.readlines())
+        
+        
+            
+        button_close = tk.Button(window, text="Close", command=window.destroy)
+        button_close.pack(fill='x')
 
-root.mainloop()
+class App():
+
+    def __init__(self):
+        self.root = tk.Tk()
+        self.root.title('Simple Macro Recorder')
+        self.root.geometry('300x140+530+313')
+        
+        label = tk.Label(self.root, text='To stop recording press(F12)...').pack(side='top')
+        
+        button_open_log = tk.Button(self.root, text="Open log file", command=self.popup_window)
+        button_open_log.pack(fill='x')
+
+        button_record = tk.Button(self.root, text="Record", command=record)
+        button_record.pack(fill='x')
+        
+        button_play = tk.Button(self.root, text="Play", command=play)
+        button_play.pack(fill='x')
+
+        button_close = tk.Button(self.root, text="Close", command=self.root.destroy)
+        button_close.pack(fill='x')
+
+    def run(self):
+        self.root.mainloop()
+
+    def popup_window(self):
+        PopupWindow(self.root)
+
+    def popup_showinfo(self):
+        showinfo("ShowInfo", "Hello World!")
+    
+   
+    
+
+# --- main ---
+
+app = App()
+app.run()
 
