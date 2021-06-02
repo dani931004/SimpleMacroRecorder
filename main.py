@@ -1,37 +1,15 @@
+#!/usr/bin/python3
 import pyautogui as pa
 from time import sleep, strftime
 import tkinter as tk
 from tkinter import filedialog as fd
-
-
-# Record number of positions where mouse is clicked or scrolled
-def record():
-    print('Starting after 3 sec...')
-    print('3...')
-    sleep(1)
-    print('2...')
-    sleep(1)
-    print('1...')
-    sleep(1)
-    print('Recording...')
-    from recorder import play_recorder
-    # Record mouse clicks and scrolls
-    play_recorder()
-    print('Record stopped...')
-    print('Recording done...')
-    return 'Finished!'
+from tkinter.messagebox import showinfo
+import time
+import recorder
 
 
 # Play recorded positions
 def play():
-    print('Waiting 3 sec...')
-    print('3...')
-    sleep(1)
-    print('2...')
-    sleep(1)
-    print('1...')
-    sleep(1)
-    print('Playing...')
     # open the mouse log file and take all x,y and buttons from it
     with open('mouse_log.txt', 'r') as f:
         a = f.readlines()
@@ -56,9 +34,17 @@ def play():
                 pa.scroll(s, x=int(sx), y=int(sy))
                 print('Scroll')
             elif 'Press' in line:
-                line = line.split(',')
-                speed = line[1]
-                sleep(float(speed))
+                if "Press:','," in line:
+                    line = line.split("'")
+                    speed = line[2].replace(',', '').replace('\n', '')
+                    sleep(float(speed))
+                    line[0] = "Press:','"
+                    print('if')
+                else:
+                    line = line.split(',')
+                    speed = line[1].replace('\n', '')
+                    sleep(float(speed))
+                    print('else')
                 line0 = line[0].replace('Press:', '').replace("'", "").replace('\n', '')
                 if "shift_r" in line0:
                     press = 'shiftright'
@@ -89,14 +75,14 @@ def play():
                     press = line0.replace('"', "").replace(' ', '')
                     press = press.replace('Key.', '').replace('_', '')
                     pa.press(press)
-                    print('ELSE')
+                    print('Final ELSE')
                     print('Press', press)
     return 'Complete!'
 
 
 # --- classes ---
 
-class PopupWindow():
+class PopupWindow1():
     def __init__(self, root):
         # self.root = root
         window = tk.Toplevel(root)
@@ -115,8 +101,10 @@ class PopupWindow():
 
         button_close = tk.Button(window, text="Close", command=window.destroy)
         button_close.pack(fill='x')
+       
+        
 
-
+super = 0
 class App():
 
     def __init__(self):
@@ -129,22 +117,20 @@ class App():
         label2 = tk.Label(self.root, text='''Upper left corner with mouse to stop Play...''')
         label2.pack(side='top')
 
-        def clock():
-            hour = strftime('%I')
-            minute = strftime('%M')
-            second = strftime('%S')
-            clock_label.config(text=hour + ':' + minute + ':' + second)
-            clock_label.after(1000, clock)
-
-        clock_label = tk.Label(self.root, text="")
-        clock_label.pack(side='top')
-        clock()
         button_open_log = tk.Button(self.root, text="Open log file", command=self.popup_window)
         button_open_log.pack(fill='x')
+        def record():
+            clock()
+            recorder.play_recorder()
+        def clock():
+            global super
+            super = super + 1
+            button_record.config(text='Elapsed time: '+str(int(super))+' sec',command=self.popup_info)
+            button_record.after(1000, clock)
 
         button_record = tk.Button(self.root, text="Record", command=record)
         button_record.pack(fill='x')
-
+        
         button_play = tk.Button(self.root, text="Play", command=play)
         button_play.pack(fill='x')
 
@@ -155,7 +141,13 @@ class App():
         self.root.mainloop()
 
     def popup_window(self):
-        PopupWindow(self.root)
+        PopupWindow1(self.root)
+   
+    def popup_info(self):
+        showinfo("Recording...", "Recording, please press(F12) to stop!")
+
+        
+        
 
 
 # --- main ---
