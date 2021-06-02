@@ -1,4 +1,3 @@
-
 from pynput.mouse import Listener as mouse_listener
 from pynput.keyboard import Listener as key_listener
 from pynput import keyboard
@@ -7,7 +6,6 @@ import logging
 import time
 
 start = time.time()
-
 
 def play_recorder():
     global start
@@ -31,19 +29,14 @@ def play_recorder():
         logging.info('{0},{1},scrollh{2},{3},{4}'.format(x, y, dx, dy, stopp))
         start = time.time()
 
-    def on_release(key):
-        if key == keyboard.Key.f12:
-            # Stopp listener
-            mouse_listener.stop()
-            return sys.exit()
-
 
     def on_press(key):
         global start
         if key == keyboard.Key.f12:
             # Stopp listener
-            mouse_listener.stop()
-            return sys.exit()
+            mouse_listen.stop()
+            keyboard_listen.stop()
+            return False
         else:
             print(key)
             stopp = time.time() - start
@@ -53,17 +46,8 @@ def play_recorder():
     mouse_listen = mouse_listener(on_click=on_click, on_scroll=on_scroll)
     
     # Setup the listener threads
-    keyboard_listen = key_listener(on_press=on_press, on_release=on_release)
+    keyboard_listen = key_listener(on_press=on_press) #, on_release=on_release
 
     # Start the threads and join them so the script doesn't end early
     keyboard_listen.start()
     mouse_listen.start()
-    # keyboard_listen.join()
-    # mouse_listen.join()
-
-    
-
-
-
-        
-        

@@ -1,12 +1,11 @@
 #!/usr/bin/python3
 import pyautogui as pa
-from time import sleep, strftime
+from time import sleep
 import tkinter as tk
 from tkinter import filedialog as fd
 from tkinter.messagebox import showinfo
-import time
-import recorder
-
+from recorder import play_recorder
+from pynput.keyboard import Key, Listener
 
 # Play recorded positions
 def play():
@@ -103,7 +102,7 @@ class PopupWindow1():
         button_close.pack(fill='x')
        
         
-
+Recorderr = True
 super = 0
 class App():
 
@@ -121,8 +120,22 @@ class App():
         button_open_log.pack(fill='x')
         def record():
             clock()
-            recorder.play_recorder()
+            play_recorder()
+            # Collect all event until released
+            listener = Listener(on_press = show)
+            listener.start()
+        def show(key):
+            print('\nYou Entered {0}'.format( key))
+            if key == Key.f12:
+                # Stop listener
+                button_record.config(text='STOP', command=record)
+                return False
+        
+        
+            
+            
         def clock():
+            
             global super
             super = super + 1
             button_record.config(text='Elapsed time: '+str(int(super))+' sec',command=self.popup_info)

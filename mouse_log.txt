@@ -1,40 +1,5 @@
-695,713,Button.left,5.693422794342041
-695,714,Button.left,1.1828744411468506
-695,714,Button.right,0.868396520614624
-638,711,Button.left,0.7453792095184326
-Press:'s',0.4709615707397461
-Press:'d',0.536757230758667
-Press:'f',0.6068804264068604
-Press:'a',0.5500543117523193
-Press:'a',0.7761194705963135
-Press:'d',0.6163754463195801
-1336,491,Button.left,1.7712323665618896
-901,698,Button.left,1.681731939315796
-1350,484,Button.left,1.6690752506256104
-Press:'a',3.152768850326538
-Press:'s',0.057723283767700195
-Unhandled exception in listener callback
-Traceback (most recent call last):
-  File "/home/dani/.local/lib/python3.8/site-packages/pynput/_util/__init__.py", line 211, in inner
-    return f(self, *args, **kwargs)
-  File "/home/dani/.local/lib/python3.8/site-packages/pynput/_util/xorg.py", line 471, in _handler
-    self._handle(self._display_stop, event)
-  File "/home/dani/.local/lib/python3.8/site-packages/pynput/keyboard/_xorg.py", line 564, in _handle
-    self.on_press(key)
-  File "/home/dani/.local/lib/python3.8/site-packages/pynput/_util/__init__.py", line 127, in inner
-    if f(*args) is False:
-  File "/home/dani/Desktop/Projects/macro/recorder.py", line 45, in on_press
-    mouse_listener.stop()
-TypeError: stop() missing 1 required positional argument: 'self'
-1139,508,scrollh0,-1,13.111628770828247
-1139,508,scrollh0,-1,0.02307581901550293
-1139,508,scrollh0,-1,0.02805471420288086
-1139,508,scrollh0,-1,0.039620161056518555
-1139,508,scrollh0,-1,0.022037982940673828
-1139,508,scrollh0,-1,0.2897059917449951
-1139,508,scrollh0,-1,0.015787601470947266
-1139,508,scrollh0,-1,0.0156097412109375
-1139,508,scrollh0,-1,0.02820897102355957
-842,686,Button.left,1.1437044143676758
-1343,483,Button.left,1.699692726135254
-762,497,Button.left,1.2858452796936035
+547,110,Button.left,3.2697501182556152
+642,693,Button.left,1.0241329669952393
+Press:'a',0.2283782958984375
+Press:'s',0.006687641143798828
+Press:'d',0.08536386489868164
