@@ -11,63 +11,6 @@ import time
 
 
 # Play recorded positions
-def play():
-    global go, ready
-    go = time.time()
-    # open the mouse log file and take all x,y and buttons from it
-    with open('mouse_log.txt', 'r') as f:
-        # file = f.readlines()
-        # a = tuple(file)
-        for line in f:
-            if 'Button' in line:
-                splitted_line = line.split(',')
-                speed = splitted_line[3]
-                sleep(float(speed))
-                dx = splitted_line[0]
-                dy = splitted_line[1]
-                b = splitted_line[2].replace('Button.', '').replace('\n', '')
-                buttons = b
-                pa.click(x=int(dx), y=int(dy), button=buttons)
-            elif 'scrollh' in line:
-                lsplitted_line = line.split(',')
-                speed = lsplitted_line[4]
-                sleep(float(speed))
-                s = lsplitted_line[3].replace('\n', '')
-                sx = lsplitted_line[0]
-                sy = lsplitted_line[1]
-                pa.scroll(s, x=int(sx), y=int(sy))
-            elif 'Press' in line:
-                if "Press:','," in line:
-                    line = line.split("'")
-                    speed = line[2].replace(',', '').replace('\n', '')
-                    sleep(float(speed))
-                    line[0] = "Press:','"
-                else:
-                    line = line.split(',')
-                    speed = line[1].replace('\n', '')
-                    sleep(float(speed))
-                line0 = line[0].replace('Press:', '').replace("'", "").replace('\n', '')
-                if "shift_r" in line0:
-                    press = 'shiftright'
-                    pa.press(press)
-                elif '""' in line0:
-                    press = '"'
-                    pa.press(press)
-                elif 'ctrl_r' in line0:
-                    press = "ctrlright"
-                    pa.press(press)
-                elif 'alt_r' in line0:
-                    press = "altright"
-                    pa.press(press)
-                elif 'cmd' in line0:
-                    press = "winleft"
-                    pa.press(press)
-                else:
-                    press = line0.replace('"', "").replace(' ', '')
-                    press = press.replace('Key.', '').replace('_', '')
-                    pa.press(press)
-    ready = time.time() - go
-    return print('Ready for', ready,'sec')
 
 # --- classes ---
 
@@ -100,7 +43,7 @@ class App():
         global play_time
         self.root = tk.Tk()
         self.root.title('Simple Macro Recorder')
-        self.root.geometry('300x185+530+313')
+        self.root.geometry('300x165+530+313')
 
         label = tk.Label(self.root, text='To stop recording press(F12)...')
         label.pack(side='top')
@@ -109,6 +52,7 @@ class App():
 
         button_open_log = tk.Button(self.root, text="Open log file", command=self.popup_window)
         button_open_log.pack(fill='x')
+        
         def record():
             global switch
             if switch == False:
@@ -121,24 +65,86 @@ class App():
             # Collect all event until released
             listener = Listener(on_press = show)
             listener.start()
+        
         def show(key):
             global switch
             if key == Key.f12:
                 # Stop listener
                 switch = True
                 return False            
+        
         def clock():
             global switch
             if switch == False:
                 global super
                 super = super + 1
                 button_record.config(text='Elapsed time: '+str(int(super))+' sec',command=self.popup_info)
-                button_record.after(1000, clock)
+                button_record.after(1, clock)
             else:
-                button_record.config(text='Record', command=record)
+                minutes = super / 60
+                hours = super / 3600
+                button_record.config(text='Recorded for {}:{}:{} hours'.format(int(hours),int(minutes),int(super)), command=record)
                 super = 0
                 switch = False
-                
+
+        def play():
+            global go, ready
+            go = time.time()
+            # open the mouse log file and take all x,y and buttons from it
+            with open('mouse_log.txt', 'r') as f:
+                # file = f.readlines()
+                # a = tuple(file)
+                for line in f:
+                    if 'Button' in line:
+                        splitted_line = line.split(',')
+                        speed = splitted_line[3]
+                        sleep(float(speed))
+                        dx = splitted_line[0]
+                        dy = splitted_line[1]
+                        b = splitted_line[2].replace('Button.', '').replace('\n', '')
+                        buttons = b
+                        pa.click(x=int(dx), y=int(dy), button=buttons)
+                    elif 'scrollh' in line:
+                        lsplitted_line = line.split(',')
+                        speed = lsplitted_line[4]
+                        sleep(float(speed))
+                        s = lsplitted_line[3].replace('\n', '')
+                        sx = lsplitted_line[0]
+                        sy = lsplitted_line[1]
+                        pa.scroll(s, x=int(sx), y=int(sy))
+                    elif 'Press' in line:
+                        if "Press:','," in line:
+                            line = line.split("'")
+                            speed = line[2].replace(',', '').replace('\n', '')
+                            sleep(float(speed))
+                            line[0] = "Press:','"
+                        else:
+                            line = line.split(',')
+                            speed = line[1].replace('\n', '')
+                            sleep(float(speed))
+                        line0 = line[0].replace('Press:', '').replace("'", "").replace('\n', '')
+                        if "shift_r" in line0:
+                            press = 'shiftright'
+                            pa.press(press)
+                        elif '""' in line0:
+                            press = '"'
+                            pa.press(press)
+                        elif 'ctrl_r' in line0:
+                            press = "ctrlright"
+                            pa.press(press)
+                        elif 'alt_r' in line0:
+                            press = "altright"
+                            pa.press(press)
+                        elif 'cmd' in line0:
+                            press = "winleft"
+                            pa.press(press)
+                        else:
+                            press = line0.replace('"', "").replace(' ', '')
+                            press = press.replace('Key.', '').replace('_', '')
+                            pa.press(press)
+            ready = time.time() - go
+            return print('Ready for', ready,'sec')
+        
         button_record = tk.Button(self.root, text="Record", command=record)
         button_record.pack(fill='x')
 
