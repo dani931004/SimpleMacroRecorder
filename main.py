@@ -4,15 +4,21 @@ from time import sleep
 import tkinter as tk
 from tkinter import filedialog as fd
 from tkinter.messagebox import showinfo
-from recorder import play_recorder
+# from recorder import play_recorder
 from pynput.keyboard import Key, Listener
+from recorder import play_recorder
+import time
+
 
 # Play recorded positions
 def play():
+    global go, ready
+    go = time.time()
     # open the mouse log file and take all x,y and buttons from it
     with open('mouse_log.txt', 'r') as f:
-        a = f.readlines()
-        for line in a:
+        # file = f.readlines()
+        # a = tuple(file)
+        for line in f:
             if 'Button' in line:
                 splitted_line = line.split(',')
                 speed = splitted_line[3]
@@ -22,7 +28,6 @@ def play():
                 b = splitted_line[2].replace('Button.', '').replace('\n', '')
                 buttons = b
                 pa.click(x=int(dx), y=int(dy), button=buttons)
-                print('Click')
             elif 'scrollh' in line:
                 lsplitted_line = line.split(',')
                 speed = lsplitted_line[4]
@@ -31,53 +36,38 @@ def play():
                 sx = lsplitted_line[0]
                 sy = lsplitted_line[1]
                 pa.scroll(s, x=int(sx), y=int(sy))
-                print('Scroll')
             elif 'Press' in line:
                 if "Press:','," in line:
                     line = line.split("'")
                     speed = line[2].replace(',', '').replace('\n', '')
                     sleep(float(speed))
                     line[0] = "Press:','"
-                    print('if')
                 else:
                     line = line.split(',')
                     speed = line[1].replace('\n', '')
                     sleep(float(speed))
-                    print('else')
                 line0 = line[0].replace('Press:', '').replace("'", "").replace('\n', '')
                 if "shift_r" in line0:
                     press = 'shiftright'
                     pa.press(press)
-                    print('IF')
-                    print('Press', press)
                 elif '""' in line0:
                     press = '"'
-                    print('ELIF')
                     pa.press(press)
-                    print('Press', press)
                 elif 'ctrl_r' in line0:
                     press = "ctrlright"
                     pa.press(press)
-                    print('ELIF')
-                    print('Press', press)
                 elif 'alt_r' in line0:
                     press = "altright"
                     pa.press(press)
-                    print('ELIF')
-                    print('Press', press)
                 elif 'cmd' in line0:
                     press = "winleft"
                     pa.press(press)
-                    print('ELIF')
-                    print('Press', press)
                 else:
                     press = line0.replace('"', "").replace(' ', '')
                     press = press.replace('Key.', '').replace('_', '')
                     pa.press(press)
-                    print('Final ELSE')
-                    print('Press', press)
-    return 'Complete!'
-
+    ready = time.time() - go
+    return print('Ready for', ready,'sec')
 
 # --- classes ---
 
@@ -102,11 +92,12 @@ class PopupWindow1():
         button_close.pack(fill='x')
        
         
-Recorderr = True
+switch = False
 super = 0
 class App():
 
     def __init__(self):
+        global play_time
         self.root = tk.Tk()
         self.root.title('Simple Macro Recorder')
         self.root.geometry('300x185+530+313')
@@ -119,31 +110,38 @@ class App():
         button_open_log = tk.Button(self.root, text="Open log file", command=self.popup_window)
         button_open_log.pack(fill='x')
         def record():
-            clock()
-            play_recorder()
+            global switch
+            if switch == False:
+                play_recorder()
+                clock()
+            else:
+                switch = False
+                clock()
+                play_recorder()
             # Collect all event until released
             listener = Listener(on_press = show)
             listener.start()
         def show(key):
-            print('\nYou Entered {0}'.format( key))
+            global switch
             if key == Key.f12:
                 # Stop listener
-                button_record.config(text='STOP', command=record)
-                return False
-        
-        
-            
-            
+                switch = True
+                return False            
         def clock():
-            
-            global super
-            super = super + 1
-            button_record.config(text='Elapsed time: '+str(int(super))+' sec',command=self.popup_info)
-            button_record.after(1000, clock)
-
+            global switch
+            if switch == False:
+                global super
+                super = super + 1
+                button_record.config(text='Elapsed time: '+str(int(super))+' sec',command=self.popup_info)
+                button_record.after(1000, clock)
+            else:
+                button_record.config(text='Record', command=record)
+                super = 0
+                switch = False
+                
         button_record = tk.Button(self.root, text="Record", command=record)
         button_record.pack(fill='x')
-        
+
         button_play = tk.Button(self.root, text="Play", command=play)
         button_play.pack(fill='x')
 
@@ -158,7 +156,7 @@ class App():
    
     def popup_info(self):
         showinfo("Recording...", "Recording, please press(F12) to stop!")
-
+    
         
         
 

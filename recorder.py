@@ -1,20 +1,20 @@
 from pynput.mouse import Listener as mouse_listener
 from pynput.keyboard import Listener as key_listener
 from pynput import keyboard
-import sys
 import logging
 import time
 
-start = time.time()
-
 def play_recorder():
     global start
+    logging.basicConfig(filename="mouse_log.txt",
+                    filemode='w',
+                    level=logging.DEBUG,
+                    format='%(message)s')
+    
+    start = time.time()
     # format='%(asctime)s: %(message)s'
     # --> to see when the key is pressed or clicked or scrolled
-    logging.basicConfig(filename="mouse_log.txt",
-                        filemode='w',
-                        level=logging.DEBUG,
-                        format='%(message)s')
+
     def on_click(x, y, button, pressed):
         global start
         if pressed:
@@ -29,7 +29,6 @@ def play_recorder():
         logging.info('{0},{1},scrollh{2},{3},{4}'.format(x, y, dx, dy, stopp))
         start = time.time()
 
-
     def on_press(key):
         global start
         if key == keyboard.Key.f12:
@@ -38,11 +37,9 @@ def play_recorder():
             keyboard_listen.stop()
             return False
         else:
-            print(key)
             stopp = time.time() - start
             logging.info('Press:{0},{1}'.format(key, stopp))
             start = time.time()
-
     mouse_listen = mouse_listener(on_click=on_click, on_scroll=on_scroll)
     
     # Setup the listener threads
@@ -51,3 +48,4 @@ def play_recorder():
     # Start the threads and join them so the script doesn't end early
     keyboard_listen.start()
     mouse_listen.start()
+
