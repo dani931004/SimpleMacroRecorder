@@ -20,9 +20,6 @@ minutes = int(super/60)
 hours = int(minutes/60)
 if minutes >= 60:
     minutes = minutes-60*hours
-if super >= 60:
-    super = int(((super/3600)-hours)*60)
-    print(super)
 super = (super-(hours*3600))-(minutes*60)
 
 sleep(0.001)
