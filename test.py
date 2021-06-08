@@ -23,6 +23,7 @@ if minutes >= 60:
 if super >= 60:
     super = int(((super/3600)-hours)*60)
     print(super)
+super = (super-(hours*3600))-(minutes*60)
 
 sleep(0.001)
 print('Recorded for : {}:{}:{} time'.format(int(hours),int(minutes),int(super)))
