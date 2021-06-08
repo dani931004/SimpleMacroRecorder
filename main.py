@@ -74,6 +74,7 @@ class App():
                 return False            
         
         def clock():
+            hours,minutes = 0,0
             global switch
             if switch == False:
                 global super
@@ -81,8 +82,17 @@ class App():
                 button_record.config(text='Elapsed time: '+str(int(super))+' sec',command=self.popup_info)
                 button_record.after(1, clock)
             else:
-                minutes = super / 60
-                hours = super / 3600
+                print(f'{hours}:{minutes}:{super} before convert')
+                minutes = int(super/60)
+                hours = int(super/3600)
+                print(f'{hours}:{minutes}:{super} after convert')
+                if super >= 60:
+                    super = 0
+                    minutes += 1
+                    if minutes >= 60:
+                        super = 0
+                        minutes = 0
+                        hours += 1
                 button_record.config(text='Recorded for {}:{}:{} hours'.format(int(hours),int(minutes),int(super)), command=record)
                 super = 0
                 switch = False
