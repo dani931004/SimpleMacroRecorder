@@ -8,7 +8,7 @@ from tkinter.messagebox import showinfo
 from pynput.keyboard import Key, Listener
 from recorder import play_recorder
 import time
-
+from multiprocessing import Process
 
 # Play recorded positions
 
@@ -35,12 +35,10 @@ class PopupWindow1():
         button_close.pack(fill='x')
        
         
-switch = False
-super = 0
+switch,super,minutes,hours,seconds = False,0,0,0,0
 class App():
 
     def __init__(self):
-        global play_time
         self.root = tk.Tk()
         self.root.title('Simple Macro Recorder')
         self.root.geometry('300x165+530+313')
@@ -57,10 +55,10 @@ class App():
             global switch
             if switch == False:
                 play_recorder()
-                clock()
+                clock_record()
             else:
                 switch = False
-                clock()
+                clock_record()
                 play_recorder()
             # Collect all event until released
             listener = Listener(on_press = show)
@@ -72,33 +70,34 @@ class App():
                 # Stop listener
                 switch = True
                 return False            
-        
-        def clock():
-            hours,minutes = 0,0
-            global switch
+               
+        def clock_record():
+            global switch,super,minutes,hours,seconds
             if switch == False:
-                global super
-                super = super + 1
-                button_record.config(text='Elapsed time: '+str(int(super))+' sec',command=self.popup_info)
-                button_record.after(1, clock)
-            else:
-                print(f'{hours}:{minutes}:{super} before convert')
-                minutes = int(super/60)
-                hours = int(super/3600)
-                print(f'{hours}:{minutes}:{super} after convert')
-                if super >= 60:
+                super += 1
+                seconds += 1
+                if super % 60 == 0:
                     super = 0
                     minutes += 1
-                    if minutes >= 60:
-                        super = 0
-                        minutes = 0
-                        hours += 1
+                if minutes >= 60:
+                    minutes = 0
+                    hours += 1
+                button_record.config(text='Elapsed time: {}:{}:{} hours'.format(int(hours),int(minutes),int(super)),command=self.popup_info_record)
+                button_record.after(1000, clock_record)
+            else:
+                minutes = int(seconds/60)
+                hours = int(minutes/60)
+                if minutes >= 60:
+                    minutes = minutes-60*hours
+                seconds = (seconds-(hours*3600))-(minutes*60)
                 button_record.config(text='Recorded for {}:{}:{} hours'.format(int(hours),int(minutes),int(super)), command=record)
+                seconds = 0
                 super = 0
+                hours = 0
+                minutes = 0
                 switch = False
 
         def play():
-            global go, ready
             go = time.time()
             # open the mouse log file and take all x,y and buttons from it
             with open('mouse_log.txt', 'r') as f:
@@ -154,24 +153,40 @@ class App():
                             pa.press(press)
             ready = time.time() - go
             return print('Ready for', ready,'sec')
+
+    
+
+        def play_process():
+            process = Process(target=play)
+            process.start()
+            self.popup_info_play()
         
+
+
+
         button_record = tk.Button(self.root, text="Record", command=record)
         button_record.pack(fill='x')
-
-        button_play = tk.Button(self.root, text="Play", command=play)
+        
+        button_play = tk.Button(self.root, text="Play", command=play_process)
         button_play.pack(fill='x')
+
+        # button_ = tk.Entry(self.root)
+        # button_.pack(side='left')
 
         button_close = tk.Button(self.root, text="Close", command=self.root.destroy)
         button_close.pack(fill='x')
-
+        
     def run(self):
         self.root.mainloop()
 
     def popup_window(self):
         PopupWindow1(self.root)
    
-    def popup_info(self):
+    def popup_info_record(self):
         showinfo("Recording...", "Recording, please press(F12) to stop!")
+
+    def popup_info_play(self):
+        showinfo("Playing...","Go to upper left corner with mouse to interrupt!")
     
         
         
