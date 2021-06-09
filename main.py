@@ -138,8 +138,8 @@ class App():
                         elif '""' in line0:
                             press = '"'
                             pa.press(press)
-                        elif 'ctrl_r' in line0:
-                            press = "ctrlright"
+                        elif 'ctrl' in line0:
+                            press = "ctrlleft"
                             pa.press(press)
                         elif 'alt_r' in line0:
                             press = "altright"
@@ -154,7 +154,7 @@ class App():
             ready = time.time() - go
             return print('Ready for', ready,'sec')
 
-    
+
 
         def play_process():
             process = Process(target=play)
@@ -162,16 +162,11 @@ class App():
             self.popup_info_play()
         
 
-
-
         button_record = tk.Button(self.root, text="Record", command=record)
         button_record.pack(fill='x')
         
         button_play = tk.Button(self.root, text="Play", command=play_process)
         button_play.pack(fill='x')
-
-        # button_ = tk.Entry(self.root)
-        # button_.pack(side='left')
 
         button_close = tk.Button(self.root, text="Close", command=self.root.destroy)
         button_close.pack(fill='x')
