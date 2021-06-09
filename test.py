@@ -4,10 +4,7 @@ def gen(max=0):
         yield n
         n += 1
 a = gen(10)
-print(next(a))
-print(next(a))
-print(next(a))
-print(next(a))
+
 
 
 
