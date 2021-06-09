@@ -1,10 +1,7 @@
-def gen(max=0):
-    n = 1
-    while n < max:
-        yield n
-        n += 1
-a = gen(10)
-
-
-
-
+# Keyboard module in Python 
+import keyboard 
+  
+# press ctrl+shift+z to print "Hotkey Detected" 
+keyboard.add_hotkey('ctrl + shift + z', print, args =('Hotkey', 'Detected')) 
+  
+keyboard.wait('esc') 
