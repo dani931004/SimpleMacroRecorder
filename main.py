@@ -1,13 +1,12 @@
 #!/usr/bin/python3
 import pyautogui as pa
-from time import sleep
+from time import sleep, time
 import tkinter as tk
 from tkinter import filedialog as fd
 from tkinter.messagebox import showinfo
 # from recorder import play_recorder
 from pynput.keyboard import Key, Listener
 from recorder import play_recorder
-import time
 from multiprocessing import Process
 
 # Play recorded positions
@@ -98,7 +97,7 @@ class App():
                 switch = False
 
         def play():
-            go = time.time()
+            go = time()
             # open the mouse log file and take all x,y and buttons from it
             with open('mouse_log.txt', 'r') as f:
                 # file = f.readlines()
@@ -151,7 +150,7 @@ class App():
                             press = line0.replace('"', "").replace(' ', '')
                             press = press.replace('Key.', '').replace('_', '')
                             pa.press(press)
-            ready = time.time() - go
+            ready = time() - go
             return print('Ready for', ready,'sec')
 
 
