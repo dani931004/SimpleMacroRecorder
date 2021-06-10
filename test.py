@@ -5,3 +5,4 @@ import keyboard
 keyboard.add_hotkey('ctrl + shift + z', print, args =('Hotkey', 'Detected')) 
   
 keyboard.wait('esc') 
+# New BRAnch
