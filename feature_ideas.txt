@@ -1,0 +1,4 @@
+Pause recording
+Pause playing
+ctrl hotkeys
+better GUI
