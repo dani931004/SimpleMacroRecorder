@@ -19,14 +19,14 @@ def play_recorder():
         global start
         if pressed:
             stopp = time.time() - start
-            logging.info('{0},{1},{2},{3}'.format(x, y, button, stopp))
+            logging.info('click,{0},{1},{2},{3}'.format(x, y, button, stopp))
             start = time.time()
 
 
     def on_scroll(x, y, dx, dy):
         global start
         stopp = time.time() - start
-        logging.info('{0},{1},scrollh{2},{3},{4}'.format(x, y, dx, dy, stopp))
+        logging.info('scroll,{0},{1},{2},{3},{4}'.format(x, y, dx, dy, stopp))
         start = time.time()
 
     def on_press(key):
@@ -38,7 +38,7 @@ def play_recorder():
             return False
         else:
             stopp = time.time() - start
-            logging.info('Press:{0},{1}'.format(key, stopp))
+            logging.info('press,{0},{1}'.format(key, stopp))
             start = time.time()
     mouse_listen = mouse_listener(on_click=on_click, on_scroll=on_scroll)
     

@@ -38,6 +38,7 @@ switch,super,minutes,hours,seconds = False,0,0,0,0
 class App():
 
     def __init__(self):
+        '''Initiate the GUI window'''
         self.root = tk.Tk()
         self.root.title('Simple Macro Recorder')
         self.root.geometry('300x165+530+313')
@@ -51,6 +52,7 @@ class App():
         button_open_log.pack(fill='x')
         
         def record():
+            '''Start recording'''
             global switch
             if switch == False:
                 play_recorder()
@@ -64,6 +66,8 @@ class App():
             listener.start()
         
         def show(key):
+            '''Create switch to know when to 
+               terminate recording'''
             global switch
             if key == Key.f12:
                 # Stop listener
@@ -71,6 +75,8 @@ class App():
                 return False            
                
         def clock_record():
+            '''Make clock when recording is active
+               and show how long was the recording'''
             global switch,super,minutes,hours,seconds
             if switch == False:
                 super += 1
@@ -98,7 +104,8 @@ class App():
 
         def play():
             go = time()
-            # open the mouse log file and take all x,y and buttons from it
+            '''open the mouse log file 
+               and take all x,y and buttons from it'''
             with open('mouse_log.txt', 'r') as f:
                 # file = f.readlines()
                 # a = tuple(file)
