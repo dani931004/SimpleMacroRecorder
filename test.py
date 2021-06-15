@@ -1,3 +1,7 @@
+'''Replace original play function to 
+  operate with pynput'''
+
+
 from time import time, sleep
 from pynput.keyboard import Controller as key_ctrl
 from pynput.mouse import Controller
@@ -19,8 +23,10 @@ def play():
                         mouse.position = (int(line_part[1]),int(line_part[2]))
                         if 'left' in line_part[3]:
                             mouse.click(Button.left,1)
-                        else:
+                        elif 'right' in line_part[3]:
                             mouse.click(Button.right,1)
+                        else:
+                            mouse.click(Button.middle,1)
                     # elif 'scrollh' in line:
                     #     lline_part = line.split(',')
                     #     speed = lline_part[4]
