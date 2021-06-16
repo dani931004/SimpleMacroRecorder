@@ -1,17 +1,17 @@
 #!/usr/bin/python3
-import pyautogui as pa
-from time import sleep, time
+
 import tkinter as tk
 from tkinter import filedialog as fd
 from tkinter.messagebox import showinfo
-# from recorder import play_recorder
 from pynput.keyboard import Key, Listener
 from recorder import play_recorder
 from multiprocessing import Process
+from time import time, sleep
+from pynput import keyboard
+from pynput.mouse import Controller
+from pynput.mouse import Button
+from pynput.keyboard import Key
 
-# Play recorded positions
-
-# --- classes ---
 
 class PopupWindow1():
     def __init__(self, root):
@@ -33,7 +33,72 @@ class PopupWindow1():
         button_close = tk.Button(window, text="Close", command=window.destroy)
         button_close.pack(fill='x')
        
-        
+keyDictionary = {
+    "Key.alt":Key.alt,
+    "Key.alt_l":Key.alt_l,
+    "Key.alt_r":Key.alt_r,
+    "Key.alt_gr":Key.alt_gr,
+    "Key.backspace":Key.backspace,
+    "Key.caps_lock":Key.caps_lock,
+    "Key.cmd":Key.cmd,
+    "Key.cmd_l":Key.cmd_l,
+    "Key.cmd_r":Key.cmd_r,
+    "Key.ctrl":Key.ctrl,
+    "Key.ctrl_l":Key.ctrl_l,
+    "Key.ctrl_r":Key.ctrl_r,
+    "Key.delete":Key.delete,
+    "Key.down":Key.down,
+    "Key.end":Key.end,
+    "Key.enter":Key.enter,
+    "Key.esc":Key.esc,
+    "Key.f1":Key.f1,
+    "Key.f2":Key.f2,
+    "Key.f3":Key.f3,
+    "Key.f4":Key.f4,
+    "Key.f5":Key.f5,
+    "Key.f6":Key.f6,
+    "Key.f7":Key.f7,
+    "Key.f8":Key.f8,
+    "Key.f9":Key.f9,
+    "Key.f10":Key.f10,
+    "Key.f11":Key.f11,
+    "Key.f12":Key.f12,
+    "Key.f13":Key.f13,
+    "Key.f14":Key.f14,
+    "Key.f15":Key.f15,
+    "Key.f16":Key.f16,
+    "Key.f17":Key.f17,
+    "Key.f18":Key.f18,
+    "Key.f19":Key.f19,
+    "Key.f20":Key.f20,
+    "Key.home":Key.home,
+    "Key.left":Key.left,
+    "Key.page_down":Key.page_down,
+    "Key.page_up":Key.page_up,
+    "Key.right":Key.right,
+    "Key.shift":Key.shift,
+    "Key.shift_l":Key.shift_l,
+    "Key.shift_r":Key.shift_r,
+    "Key.space":Key.space,
+    "Key.tab":Key.tab,
+    "Key.up":Key.up,
+    "Key.media_play_pause":Key.media_play_pause,
+    "Key.media_volume_mute":Key.media_volume_mute,
+    "Key.media_volume_down":Key.media_volume_down,
+    "Key.media_volume_up":Key.media_volume_up,
+    "Key.media_previous":Key.media_previous,
+    "Key.media_next":Key.media_next,
+    "Key.insert":Key.insert,
+    "Key.menu":Key.menu,
+    "Key.num_lock":Key.num_lock,
+    "Key.pause":Key.pause,
+    "Key.print_screen":Key.print_screen,
+    "Key.scroll_lock":Key.scroll_lock}
+
+keyring = keyDictionary.keys()
+valuering = keyDictionary.values()
+mouse = Controller()
+key_board = keyboard.Controller()
 switch,super,minutes,hours,seconds = False,0,0,0,0
 class App():
 
@@ -104,61 +169,65 @@ class App():
 
         def play():
             go = time()
-            '''open the mouse log file 
+            '''Open the mouse log file 
                and take all x,y and buttons from it'''
             with open('mouse_log.txt', 'r') as f:
-                # file = f.readlines()
-                # a = tuple(file)
                 for line in f:
-                    if 'Button' in line:
-                        splitted_line = line.split(',')
-                        speed = splitted_line[3]
-                        sleep(float(speed))
-                        dx = splitted_line[0]
-                        dy = splitted_line[1]
-                        b = splitted_line[2].replace('Button.', '').replace('\n', '')
-                        buttons = b
-                        pa.click(x=int(dx), y=int(dy), button=buttons)
-                    elif 'scrollh' in line:
-                        lsplitted_line = line.split(',')
-                        speed = lsplitted_line[4]
-                        sleep(float(speed))
-                        s = lsplitted_line[3].replace('\n', '')
-                        sx = lsplitted_line[0]
-                        sy = lsplitted_line[1]
-                        pa.scroll(s, x=int(sx), y=int(sy))
-                    elif 'Press' in line:
-                        if "Press:','," in line:
-                            line = line.split("'")
-                            speed = line[2].replace(',', '').replace('\n', '')
-                            sleep(float(speed))
-                            line[0] = "Press:','"
+                    mouse_position = mouse.position
+                    if mouse_position == (0, 0):
+                        break
+                    '''Check if button or mouse press
+                       is present for every line,
+                       and then perform it'''
+                    if 'click' in line:
+                        line_part = line.split(',')
+                        sleep(float(line_part[4]))
+                        mouse.position = (int(line_part[1]), int(line_part[2]))
+
+                        if 'left' in line_part[3]:
+                            mouse.click(Button.left, 1)
+
+                        elif 'right' in line_part[3]:
+                            mouse.click(Button.right, 1)
+
                         else:
-                            line = line.split(',')
-                            speed = line[1].replace('\n', '')
-                            sleep(float(speed))
-                        line0 = line[0].replace('Press:', '').replace("'", "").replace('\n', '')
-                        if "shift_r" in line0:
-                            press = 'shiftright'
-                            pa.press(press)
-                        elif '""' in line0:
-                            press = '"'
-                            pa.press(press)
-                        elif 'ctrl' in line0:
-                            press = "ctrlleft"
-                            pa.press(press)
-                        elif 'alt_r' in line0:
-                            press = "altright"
-                            pa.press(press)
-                        elif 'cmd' in line0:
-                            press = "winleft"
-                            pa.press(press)
+                            mouse.click(Button.middle, 1)
+
+                    elif 'scroll' in line:
+                        line_part = line.split(',')
+                        sleep(float(line_part[5]))
+                        mouse.position = (int(line_part[1]), int(line_part[2]))
+                        mouse.scroll(int(line_part[3]), int(line_part[4]))
+
+                    elif 'press' in line:
+                        line_part = line.split(',')                            
+                        
+                        if "press,','" in line:
+                            key = ','
+                            sleep(float(line_part[3]))
+                        elif '\\' in line:
+                            sleep(float(line_part[2]))
+                            key = '\\'.replace('\'','')
+                        elif 'press,"' in line:
+                            sleep(float(line_part[2]))
+                            key = "'"
                         else:
-                            press = line0.replace('"', "").replace(' ', '')
-                            press = press.replace('Key.', '').replace('_', '')
-                            pa.press(press)
+                            sleep(float(line_part[2]))
+                            key = ('{}'.format(line_part[1].replace("'","")))
+
+                        if key in keyring:
+                            print('Pressing:',key)
+                            key_board.press(keyDictionary[key])
+                            key_board.release(keyDictionary[key])
+                        else:
+                            print('Pressing:',key)
+                            key_board.press(key)
+                            key_board.release(key)
+
+
             ready = time() - go
             return print('Ready for', ready,'sec')
+
 
 
 
