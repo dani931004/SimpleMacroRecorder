@@ -1,6 +1,7 @@
 '''Make dragging mouse and
    keyboard keys possible'''
 
+'''Next make moving mouse appear on record'''
 
 #!/usr/bin/python3
 
@@ -8,7 +9,7 @@ import tkinter as tk
 from tkinter import filedialog as fd
 from tkinter.messagebox import showinfo
 from pynput.keyboard import Key, Listener
-from recorder import play_recorder
+from test_recorder import play_recorder
 from multiprocessing import Process
 from time import time, sleep
 from pynput import keyboard
@@ -175,7 +176,7 @@ class App():
             go = time()
             '''Open the mouse log file 
                and take all x,y and buttons from it'''
-            with open('mouse_log.txt', 'r') as f:
+            with open('mouse_log_test.txt', 'r') as f:
                 for line in f:
                     mouse_position = mouse.position
                     if mouse_position == (0, 0):
@@ -189,13 +190,27 @@ class App():
                         mouse.position = (int(line_part[1]), int(line_part[2]))
 
                         if 'left' in line_part[3]:
-                            mouse.click(Button.left, 1)
+                            mouse.press(Button.left)
 
                         elif 'right' in line_part[3]:
-                            mouse.click(Button.right, 1)
+                            mouse.press(Button.right)
 
                         else:
-                            mouse.click(Button.middle, 1)
+                            mouse.press(Button.middle)
+                    
+                    elif 'release' in line:
+                        line_part = line.split(',')
+                        sleep(float(line_part[4]))
+                        mouse.position = (int(line_part[1]), int(line_part[2]))
+
+                        if 'left' in line_part[3]:
+                            mouse.release(Button.left)
+
+                        elif 'right' in line_part[3]:
+                            mouse.release(Button.right)
+
+                        else:
+                            mouse.release(Button.middle)
 
                     elif 'scroll' in line:
                         line_part = line.split(',')
