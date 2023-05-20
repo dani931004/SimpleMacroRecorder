@@ -1,11 +1,8 @@
 import json
 import threading
 
-from pynput.keyboard import Key
-from pynput.keyboard import Listener as KeyboardListener
-from pynput.mouse import Button
-from pynput.mouse import Listener as MouseListener
-
+from pynput.keyboard import Key, Controller, Listener as KeyboardListener
+from pynput.mouse import Button, Listener as MouseListener
 
 class CustomButton:
     def __init__(self, label, style):
@@ -20,34 +17,52 @@ class CustomButton:
             'button': self.style,
         }
 
-
 class ButtonEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, CustomButton):
             return obj.to_dict()
         return super().default(obj)
 
-
 def record():
     # Define a list to store the events
     events = []
 
+    # Define a set to keep track of pressed modifier keys
+    modifier_keys = set()
+
+    # Create a keyboard controller to send key combinations
+    keyboard_controller = Controller()
+
     def on_press(key):
+        nonlocal modifier_keys
+
         # Add the pressed key to the set of pressed keys
-        print("Key pressed", key)
+        print("Key pressed:", key)
+
         # Wait for a specific key combination to be pressed to stop recording
         if key == Key.esc:
             # Stop the listeners
             keyboard_listener.stop()
             mouse_listener.stop()
-            print("Stopped listening and recording please wait...")
+            print("Stopped listening and recording. Please wait...")
             return False
 
-        try:
-            events.append(("k", key.char))
-        except AttributeError:
-            # Convert non-literal values to strings
-            events.append(("s", str(key)))
+        # Handle modifier keys (Ctrl, Shift, Alt)
+        if key in [Key.ctrl, Key.shift, Key.alt]:
+            modifier_keys.add(key)
+            return
+
+        # Check if any modifier keys are pressed
+        if modifier_keys:
+            # Combine the modifier keys with the current key
+            key_combination = ' + '.join([str(modifier) for modifier in modifier_keys]) + ' + ' + str(key)
+            events.append(("k", key_combination))
+        else:
+            try:
+                events.append(("k", key.char))
+            except AttributeError:
+                # Convert non-literal values to strings
+                events.append(("s", str(key)))
 
         # Write the events to a file
         with open("events.txt", "w") as f:

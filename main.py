@@ -8,7 +8,6 @@ options = ["1. Record", "2. Play", "3. Exit"]
 os.system("clear")
 while True:
     os.system("clear")
-    print("\n")
     for option in options:
         print(option)
     answer = input(f"\nChoose from 1-{len(options)}\n")

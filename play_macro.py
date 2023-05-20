@@ -4,7 +4,7 @@ import time
 
 from pynput import keyboard, mouse
 from pynput.keyboard import Controller as KeyboardController
-from pynput.keyboard import Key
+from pynput.keyboard import Key, KeyCode
 from pynput.mouse import Button
 from pynput.mouse import Controller as MouseController
 
@@ -92,8 +92,17 @@ def replay_events(click_speed = 0.5,mouse_speed = 0.02):
 
         elif event[0] == "k":  # Press character key
             if isinstance(event[1], str):  # Character key
-                keyboard.press(event[1])
-                keyboard.release(event[1])
+                key_event = event[1].split('+')[0].strip()
+                char_event = event[1].split('+')[1].strip().replace("'", "")
+                if 'Key' in key_event:
+                    keyboard.press(Key[key_event.split('.')[1]])
+                    print(char_event)
+                    keyboard.press(KeyCode(char=char_event))
+                    keyboard.release(KeyCode(char=char_event))
+                    keyboard.release(Key[key_event.split('.')[1]])
+                else:
+                    keyboard.press(event[1])
+                    keyboard.release(event[1])
 
         elif event[0] == "m":  # Mouse movement event
             time.sleep(mouse_speed)
