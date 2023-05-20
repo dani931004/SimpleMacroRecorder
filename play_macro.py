@@ -90,26 +90,50 @@ def replay_events(click_speed = 0.5,mouse_speed = 0.02):
                 keyboard.press(Key[event[1].split('.')[1]])
                 keyboard.release(Key[event[1].split('.')[1]])
 
+        # elif event[0] == "k":  # Press character key
+        #     time.sleep(click_speed)
+        #     if isinstance(event[1], str):  # Character key
+        #         key_event = event[1].split('+')[0].strip()
+        #         if 'Key' in key_event:
+        #             char_event = event[1].split('+')[1].strip().replace("'", "")
+        #             if char_event in keyring:
+        #                 keyboard.press(Key[key_event.split('.')[1]]) #press Key.alt
+        #                 keyboard.press(Key[char_event.split('.')[1]])# press Key.f2
+        #                 keyboard.release(Key[char_event.split('.')[1]])
+        #                 keyboard.release(Key[key_event.split('.')[1]])
+        #             else:
+        #                 keyboard.press(Key[key_event.split('.')[1]])
+        #                 keyboard.press(KeyCode(char=char_event))
+        #                 keyboard.release(KeyCode(char=char_event))
+        #                 keyboard.release(Key[key_event.split('.')[1]])
+        #         else:
+        #             keyboard.press(event[1])
+        #             keyboard.release(event[1])
+        
         elif event[0] == "k":  # Press character key
-            time.sleep(click_speed)
-            
+            time.sleep(mouse_speed)
             if isinstance(event[1], str):  # Character key
-                key_event = event[1].split('+')[0].strip()
-                if 'Key' in key_event:
-                    char_event = event[1].split('+')[1].strip().replace("'", "")
-                    if char_event in keyring:
-                        keyboard.press(Key[key_event.split('.')[1]]) #press Key.alt
-                        keyboard.press(Key[char_event.split('.')[1]])# press Key.f2
-                        keyboard.release(Key[char_event.split('.')[1]])
-                        keyboard.release(Key[key_event.split('.')[1]])
+                key_combination = event[1].split('+')  # Split the keys by '+'
+                keys_to_press = []
+
+                for key in key_combination:
+                    key = key.strip()  # Remove whitespace
+                    if 'Key' in key:
+                        keys_to_press.append(key)
                     else:
-                        keyboard.press(Key[key_event.split('.')[1]])
-                        keyboard.press(KeyCode(char=char_event))
-                        keyboard.release(KeyCode(char=char_event))
-                        keyboard.release(Key[key_event.split('.')[1]])
-                else:
-                    keyboard.press(event[1])
-                    keyboard.release(event[1])
+                        keys_to_press.append(key.replace("'", ""))
+
+                for key in keys_to_press:
+                    if 'Key' in str(key):
+                        keyboard.press(Key[key.split('.')[1]])
+                    else:
+                        keyboard.press(KeyCode(char=key.replace('"', '')))
+
+                for key in reversed(keys_to_press):
+                    if 'Key' in str(key):
+                        keyboard.release(Key[key.split('.')[1]])
+                    else:
+                        keyboard.release(KeyCode(char=key.replace('"', '')))
 
         elif event[0] == "m":  # Mouse movement event
             time.sleep(mouse_speed)
