@@ -108,7 +108,6 @@ def replay_events(click_speed = 0.5,mouse_speed = 0.02):
                         keyboard.release(KeyCode(char=char_event))
                         keyboard.release(Key[key_event.split('.')[1]])
                 else:
-                    print(event[1])
                     keyboard.press(event[1])
                     keyboard.release(event[1])
 
