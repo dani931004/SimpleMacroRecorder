@@ -1,5 +1,6 @@
 import json
 import threading
+import time
 
 from pynput.keyboard import Key, Controller, Listener as KeyboardListener
 from pynput.mouse import Button, Listener as MouseListener
@@ -30,13 +31,18 @@ def record():
     # Define a set to keep track of pressed modifier keys
     modifier_keys = set()
 
+    # Initialize the timestamp of the first event
+    start_time = time.time()
+
     def on_press(key):
         nonlocal modifier_keys
 
         mod_keys = [Key.ctrl, Key.shift, Key.alt]
         # Add the pressed key to the set of pressed keys
         print("Key pressed:", key)
-        
+
+        # Calculate the timestamp since the start of recording
+        timestamp = time.time() - start_time
 
         # Wait for a specific key combination to be pressed to stop recording
         if key == Key.esc:
@@ -55,17 +61,17 @@ def record():
         if modifier_keys:
             # Combine the modifier keys with the current key
             key_combination = ' + '.join([str(modifier) for modifier in modifier_keys]) + ' + ' + str(key)
-            events.append(("k", key_combination))
+            events.append(("k", key_combination, timestamp))
             # Remove released modifier keys from the set
             if key not in mod_keys:
                 for key in mod_keys:
                     modifier_keys.discard(key)
         else:
             try:
-                events.append(("k", key.char))
+                events.append(("k", key.char, timestamp))
             except AttributeError:
                 # Convert non-literal values to strings
-                events.append(("s", str(key)))
+                events.append(("s", str(key), timestamp))
 
         # Write the events to a file
         with open("events.txt", "w") as f:
@@ -73,15 +79,23 @@ def record():
 
     # Define a function to handle mouse events
     def on_move(x, y):
-        events.append(("m", x, y))
+        # Calculate the timestamp since the start of recording
+        timestamp = time.time() - start_time
+
+        events.append(("m", x, y, timestamp))
 
     def on_click(x, y, button, pressed):
         if pressed:
-            print(button)
-            events.append(("c", x, y, str(button)))
+            # Calculate the timestamp since the start of recording
+            timestamp = time.time() - start_time
+
+            events.append(("c", x, y, str(button), timestamp))
 
     def on_scroll(x, y, dx, dy):
-        events.append(("sc", x, y, dx, dy))
+        # Calculate the timestamp since the start of recording
+        timestamp = time.time() - start_time
+
+        events.append(("sc", x, y, dx, dy, timestamp))
 
     # Create the listener objects
     keyboard_listener = KeyboardListener(on_press=on_press)

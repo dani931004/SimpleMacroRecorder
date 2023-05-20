@@ -13,6 +13,7 @@ mouse = MouseController()
 
 stop_flag = False  # Flag to indicate if the program should stop
 
+normal_speed = True # Flag to indicate what is the speed of replaying
 
 def on_press(key):
     global stop_flag
@@ -34,7 +35,8 @@ def replay_events(click_speed=0.5, mouse_speed=0.02):
             break
 
         if event[0] == "s":  # Keyboard press event
-            time.sleep(click_speed)
+            if normal_speed: # Normal speed
+                time.sleep(click_speed)
 
             if isinstance(event[1], str):  # Character key
                 keyboard.press(Key[event[1].split('.')[1]])
