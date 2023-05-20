@@ -1,73 +1,63 @@
-from pynput.mouse import Listener as mouse_listener
-from pynput.keyboard import Listener as key_listener
-from pynput import keyboard
-import logging
-import time
-import readline
+import json
+from pynput.keyboard import Key, Listener as KeyboardListener
+from pynput.mouse import Button, Listener as MouseListener
 
-def play_recorder():
-    global start
-    logging.basicConfig(filename="mouse_log.txt",
-                    filemode='w',
-                    level=logging.DEBUG,
-                    format='%(message)s')
-    
-    start = time.time()
-    # format='%(asctime)s: %(message)s'
-    # --> to see when the key is pressed or clicked or scrolled
+class CustomButton:
+    def __init__(self, label, style):
+        self.label = label
+        self.style = style
 
-    def on_move(x, y):
-        global start
-        stopp = time.time() - start
-        logging.info(f'move,{x},{y},{stopp}')
-        # print(f'move,{x},{y}')
-        start = time.time()
-        
-    def on_click(x, y, button, pressed):
-        global start
-        if pressed:
-            stopp = time.time() - start
-            logging.info('click,{0},{1},{2},{3}'.format(x, y, button, stopp))
-            print('click,{0},{1},{2},{3}'.format(x, y, button, stopp))
-            start = time.time()
-        else:
-            stopp = time.time() - start
-            logging.info('release,{0},{1},{2},{3}'.format(x, y, button, stopp))
-            print('release,{0},{1},{2},{3}'.format(x, y, button, stopp))
-            start = time.time()
+    def to_dict(self):
+        return {
+            'name': self.label,
+            'x': self.style,
+            'y': self.style,
+            'button': self.style,
+        }
 
+class ButtonEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, CustomButton):
+            return obj.to_dict()
+        return super().default(obj)
 
-    def on_scroll(x, y, dx, dy):
-        global start
-        stopp = time.time() - start
-        logging.info('scroll,{0},{1},{2},{3},{4}'.format(x, y, dx, dy, stopp))
-        # print('scroll,{0},{1},{2},{3},{4}'.format(x, y, dx, dy, stopp))
-        start = time.time()
+def record():
+    # Define a list to store the events
+    events = []
 
+    # Define a function to handle keyboard events
     def on_press(key):
-        global start
-        if key == keyboard.Key.f12:
-            # Stopp listener
-            mouse_listen.stop()
-            keyboard_listen.stop()
-            print("\nRecorder has been stoped!\n")
-            return False
-        else:
-            stopp = time.time() - start
-            logging.info('press,{0},{1}'.format(key, stopp))
-            # print('press,{0},{1}'.format(key, stopp))
-            start = time.time()
-    
-    keyboard_listen = key_listener(on_press=on_press)
-    keyboard_listen.start()
-    
-    with mouse_listener(on_move=on_move, on_click=on_click, on_scroll=on_scroll) as mouse_listen:
-        mouse_listen.join()
-    # Setup the listener threads
-    
-        #, on_release=on_release
+        # Wait for a specific key to be pressed to stop recording
+        print("Key pressed", key)
+        if key == Key.esc:
+            # Stop the listeners
+            keyboard_listener.stop()
+            mouse_listener.stop()
+            print("Stopped listening")
+            # Write the events to a file
+            with open("events.txt", "w") as f:
+                json.dump(events, f, cls=ButtonEncoder)
 
-    # Start the threads and join them so the script doesn't end early
-    
-    
+        try:
+            events.append(("k", key.char))
+        except AttributeError:
+            # Convert non-literal values to strings
+            events.append(("s", str(key)))
 
+    # Define a function to handle mouse events
+    def on_move(x, y):
+        events.append(("m", x, y))
+
+    def on_click(x, y, button, pressed):
+        if pressed:
+            print(button)
+            events.append(("c", x, y, str(button)))
+
+    # Create the listener objects
+    keyboard_listener = KeyboardListener(on_press=on_press)
+    mouse_listener = MouseListener(on_move=on_move, on_click=on_click)
+
+    # Start the listeners
+    keyboard_listener.start()
+    mouse_listener.start()
+    print("Started listening")

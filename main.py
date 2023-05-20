@@ -1,5 +1,5 @@
-from recorder import play_recorder
-from play_macro import play
+from recorder import record
+from play_macro import replay_events
 from time import sleep
 import os
 
@@ -14,12 +14,12 @@ while True:
     answer = input(f"\nChoose from 1-{len(options)}\n")
     if str(answer) == "1":
         print("\nRecording...\n")
-        play_recorder()
-        continue
+        record()
+        os.system("clear")
     elif str(answer) == "2":
         print("\nPlaying...\n")
         print("\nMouse to upper left corner to 'Stop'\n\nPlaying...\n")
-        play()
+        replay_events()
         continue
     else:
         print("\nEnd of program!\n")
