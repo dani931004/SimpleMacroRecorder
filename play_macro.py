@@ -2,6 +2,7 @@ import json
 import readline
 import time
 
+import pygetwindow as gw
 from pynput import keyboard, mouse
 from pynput.keyboard import Controller as KeyboardController
 from pynput.keyboard import Key, KeyCode
@@ -77,7 +78,7 @@ keyboard = KeyboardController()
 mouse = MouseController()
 
 
-def replay_events(click_speed = 0.5,mouse_speed = 0.02):
+def replay_events(click_speed=0.5, mouse_speed=0.02):
     # Read the events from the file
     with open("events.txt", "r") as f:
         events = json.load(f)
@@ -85,11 +86,11 @@ def replay_events(click_speed = 0.5,mouse_speed = 0.02):
     for event in events:
         if event[0] == "s":  # Keyboard press event
             time.sleep(click_speed)
-            
+
             if isinstance(event[1], str):  # Character key
                 keyboard.press(Key[event[1].split('.')[1]])
                 keyboard.release(Key[event[1].split('.')[1]])
-        
+
         elif event[0] == "k":  # Press character key
             time.sleep(mouse_speed)
             if isinstance(event[1], str):  # Character key
