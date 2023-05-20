@@ -1,1 +1,1 @@
-[["k", "Key.alt + Key.tab"], ["k", "Key.alt + Key.tab"]]
+[["k", "Key.alt + Key.ctrl + 't'"], ["k", "Key.alt + Key.tab"]]
