@@ -43,26 +43,29 @@ def record():
     #     except AttributeError:
     #         # Convert non-literal values to strings
     #         events.append(("s", str(key)))
+
     pressed_keys = set()
+
     def on_press(key):
         # Add the pressed key to the set of pressed keys
-        pressed_keys.add(key)
-
-        # Check if multiple keys are pressed at the same time
-        if Key.ctrl in pressed_keys and Key.f2 in pressed_keys:
-            print("Ctrl and Alt are pressed at the same time!")
-
+        print("Key pressed", key)
         # Wait for a specific key combination to be pressed to stop recording
-        if Key.esc in pressed_keys:
+        if key == Key.esc:
             print("Stopping recording...")
             # Stop the listeners
             keyboard_listener.stop()
             mouse_listener.stop()
             print("Stopped listening")
 
-            # Write the events to a file
-            with open("events.txt", "w") as f:
-                json.dump(events, f, cls=ButtonEncoder)
+        try:
+            events.append(("k", key.char))
+        except AttributeError:
+            # Convert non-literal values to strings
+            events.append(("s", str(key)))
+
+        # Write the events to a file
+        with open("events.txt", "w") as f:
+            json.dump(events, f, cls=ButtonEncoder)
 
     # Define a function to handle mouse events
     def on_move(x, y):

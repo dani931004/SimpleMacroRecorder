@@ -77,32 +77,28 @@ keyboard = KeyboardController()
 mouse = MouseController()
 
 
-def replay_events(click_speed = 0.4,mouse_speed = 0.02):
+def replay_events(click_speed = 0.5,mouse_speed = 0.02):
     # Read the events from the file
     with open("events.txt", "r") as f:
         events = json.load(f)
 
     for event in events:
-        if event[0] == "s":  # Keyboard event
+        if event[0] == "s":  # Keyboard press event
             time.sleep(click_speed)
             
             if isinstance(event[1], str):  # Character key
                 keyboard.press(Key[event[1].split('.')[1]])
                 keyboard.release(Key[event[1].split('.')[1]])
-            else:  # Special key
-                if event[1] == "alt":
-                    keyboard.press(Key.alt)
-                    keyboard.release(Key.alt)
-                else:
-                    keyboard.press(Key[event[1].split('.')[1]])
-                    keyboard.release(Key[event[1].split('.')[1]])
+
         elif event[0] == "k":  # Press character key
             if isinstance(event[1], str):  # Character key
                 keyboard.press(event[1])
                 keyboard.release(event[1])
+
         elif event[0] == "m":  # Mouse movement event
             time.sleep(mouse_speed)
             mouse.position = (event[1], event[2])
+
         elif event[0] == "c":  # Mouse click event
             time.sleep(click_speed)
             if event[3] == "Button.left":
