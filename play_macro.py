@@ -2,28 +2,24 @@ import json
 import time
 
 from pynput import keyboard, mouse
+from pynput.keyboard import Controller
 from pynput.keyboard import Controller as KeyboardController
 from pynput.keyboard import Key, KeyCode
+from pynput.keyboard import Listener as KeyboardListener
 from pynput.mouse import Button
 from pynput.mouse import Controller as MouseController
-from pynput.keyboard import Key, Controller, Listener as KeyboardListener
-
-keyDictionary = {
-    # keyDictionary definition omitted for brevity
-}
-
-keyring = keyDictionary.keys()
-valuering = keyDictionary.values()
 
 keyboard = KeyboardController()
 mouse = MouseController()
 
 stop_flag = False  # Flag to indicate if the program should stop
 
+
 def on_press(key):
     global stop_flag
     if key == Key.esc:
         stop_flag = True  # Set the stop flag when Esc key is pressed
+
 
 def replay_events(click_speed=0.5, mouse_speed=0.02):
     # Read the events from the file
