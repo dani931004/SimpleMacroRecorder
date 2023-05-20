@@ -96,6 +96,10 @@ def replay_events(click_speed = 0.4,mouse_speed = 0.02):
                 else:
                     keyboard.press(Key[event[1].split('.')[1]])
                     keyboard.release(Key[event[1].split('.')[1]])
+        elif event[0] == "k":  # Press character key
+            if isinstance(event[1], str):  # Character key
+                keyboard.press(event[1])
+                keyboard.release(event[1])
         elif event[0] == "m":  # Mouse movement event
             time.sleep(mouse_speed)
             mouse.position = (event[1], event[2])
