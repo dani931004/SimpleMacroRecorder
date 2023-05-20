@@ -95,8 +95,8 @@ def replay_events(click_speed = 0.5,mouse_speed = 0.02):
             
             if isinstance(event[1], str):  # Character key
                 key_event = event[1].split('+')[0].strip()
-                char_event = event[1].split('+')[1].strip().replace("'", "")
                 if 'Key' in key_event:
+                    char_event = event[1].split('+')[1].strip().replace("'", "")
                     if char_event in keyring:
                         keyboard.press(Key[key_event.split('.')[1]]) #press Key.alt
                         keyboard.press(Key[char_event.split('.')[1]])# press Key.f2
@@ -108,6 +108,7 @@ def replay_events(click_speed = 0.5,mouse_speed = 0.02):
                         keyboard.release(KeyCode(char=char_event))
                         keyboard.release(Key[key_event.split('.')[1]])
                 else:
+                    print(event[1])
                     keyboard.press(event[1])
                     keyboard.release(event[1])
 

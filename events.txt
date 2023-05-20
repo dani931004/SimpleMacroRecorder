@@ -1,1 +1,1 @@
-[["k", "Key.alt + Key.f2"], ["k", "Key.alt + 's'"], ["k", "Key.alt + 'd'"], ["k", "Key.alt + 'f'"], ["k", "Key.alt + 'x'"], ["k", "Key.alt + 'c'"], ["k", "Key.alt + 'v'"], ["k", "Key.alt + 'b'"]]
+[["k", "Key.alt + Key.tab"], ["k", "Key.alt + Key.tab"]]

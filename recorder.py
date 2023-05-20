@@ -33,8 +33,10 @@ def record():
     def on_press(key):
         nonlocal modifier_keys
 
+        mod_keys = [Key.ctrl, Key.shift, Key.alt]
         # Add the pressed key to the set of pressed keys
         print("Key pressed:", key)
+        
 
         # Wait for a specific key combination to be pressed to stop recording
         if key == Key.esc:
@@ -45,7 +47,7 @@ def record():
             return False
 
         # Handle modifier keys (Ctrl, Shift, Alt)
-        if key in [Key.ctrl, Key.shift, Key.alt]:
+        if key in mod_keys:
             modifier_keys.add(key)
             return
 
@@ -54,6 +56,10 @@ def record():
             # Combine the modifier keys with the current key
             key_combination = ' + '.join([str(modifier) for modifier in modifier_keys]) + ' + ' + str(key)
             events.append(("k", key_combination))
+            # Remove released modifier keys from the set
+            if key not in mod_keys:
+                for key in mod_keys:
+                    modifier_keys.discard(key)
         else:
             try:
                 events.append(("k", key.char))
