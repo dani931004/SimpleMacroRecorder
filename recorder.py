@@ -1,6 +1,11 @@
 import json
-from pynput.keyboard import Key, Listener as KeyboardListener
-from pynput.mouse import Button, Listener as MouseListener
+import threading
+
+from pynput.keyboard import Key
+from pynput.keyboard import Listener as KeyboardListener
+from pynput.mouse import Button
+from pynput.mouse import Listener as MouseListener
+
 
 class CustomButton:
     def __init__(self, label, style):
@@ -15,11 +20,13 @@ class CustomButton:
             'button': self.style,
         }
 
+
 class ButtonEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, CustomButton):
             return obj.to_dict()
         return super().default(obj)
+
 
 def record():
     # Define a list to store the events
@@ -30,11 +37,11 @@ def record():
         print("Key pressed", key)
         # Wait for a specific key combination to be pressed to stop recording
         if key == Key.esc:
-            print("Stopping recording...")
             # Stop the listeners
             keyboard_listener.stop()
             mouse_listener.stop()
-            print("Stopped listening")
+            print("Stopped listening and recording please wait...")
+            return False
 
         try:
             events.append(("k", key.char))
@@ -62,4 +69,7 @@ def record():
     # Start the listeners
     keyboard_listener.start()
     mouse_listener.start()
-    print("Started listening")
+
+    keyboard_listener.join()
+    mouse_listener.join()
+    print("End of recording...")

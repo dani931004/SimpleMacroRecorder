@@ -7,7 +7,7 @@ import os
 options = ["1. Record", "2. Play", "3. Exit"]
 os.system("clear")
 while True:
-    # os.system("clear")
+    os.system("clear")
     print("\n")
     for option in options:
         print(option)
@@ -15,8 +15,7 @@ while True:
     if str(answer) == "1":
         print("\nRecording...\n")
         record()
-        os.system("clear")
-        print("Start recording...")
+        continue
     elif str(answer) == "2":
         print("\nPlaying...\n")
         print("\nMouse to upper left corner to 'Stop'\n\nPlaying...\n")
