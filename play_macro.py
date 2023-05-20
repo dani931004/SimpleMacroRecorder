@@ -89,26 +89,6 @@ def replay_events(click_speed = 0.5,mouse_speed = 0.02):
             if isinstance(event[1], str):  # Character key
                 keyboard.press(Key[event[1].split('.')[1]])
                 keyboard.release(Key[event[1].split('.')[1]])
-
-        # elif event[0] == "k":  # Press character key
-        #     time.sleep(click_speed)
-        #     if isinstance(event[1], str):  # Character key
-        #         key_event = event[1].split('+')[0].strip()
-        #         if 'Key' in key_event:
-        #             char_event = event[1].split('+')[1].strip().replace("'", "")
-        #             if char_event in keyring:
-        #                 keyboard.press(Key[key_event.split('.')[1]]) #press Key.alt
-        #                 keyboard.press(Key[char_event.split('.')[1]])# press Key.f2
-        #                 keyboard.release(Key[char_event.split('.')[1]])
-        #                 keyboard.release(Key[key_event.split('.')[1]])
-        #             else:
-        #                 keyboard.press(Key[key_event.split('.')[1]])
-        #                 keyboard.press(KeyCode(char=char_event))
-        #                 keyboard.release(KeyCode(char=char_event))
-        #                 keyboard.release(Key[key_event.split('.')[1]])
-        #         else:
-        #             keyboard.press(event[1])
-        #             keyboard.release(event[1])
         
         elif event[0] == "k":  # Press character key
             time.sleep(mouse_speed)
