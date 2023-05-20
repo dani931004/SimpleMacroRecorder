@@ -25,27 +25,6 @@ def record():
     # Define a list to store the events
     events = []
 
-    # Define a function to handle keyboard events
-    # def on_press(key):
-    #     # Wait for a specific key to be pressed to stop recording
-    #     print("Key pressed", key)
-    #     if key == Key.esc:
-    #         # Stop the listeners
-    #         keyboard_listener.stop()
-    #         mouse_listener.stop()
-    #         print("Stopped listening")
-    #         # Write the events to a file
-    #         with open("events.txt", "w") as f:
-    #             json.dump(events, f, cls=ButtonEncoder)
-
-    #     try:
-    #         events.append(("k", key.char))
-    #     except AttributeError:
-    #         # Convert non-literal values to strings
-    #         events.append(("s", str(key)))
-
-    pressed_keys = set()
-
     def on_press(key):
         # Add the pressed key to the set of pressed keys
         print("Key pressed", key)
