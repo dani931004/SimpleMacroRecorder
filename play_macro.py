@@ -1,8 +1,6 @@
 import json
-import readline
 import time
 
-import pygetwindow as gw
 from pynput import keyboard, mouse
 from pynput.keyboard import Controller as KeyboardController
 from pynput.keyboard import Key, KeyCode
