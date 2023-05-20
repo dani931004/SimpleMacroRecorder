@@ -80,9 +80,12 @@ def record():
             print(button)
             events.append(("c", x, y, str(button)))
 
+    def on_scroll(x, y, dx, dy):
+        events.append(("sc", x, y, dx, dy))
+
     # Create the listener objects
     keyboard_listener = KeyboardListener(on_press=on_press)
-    mouse_listener = MouseListener(on_move=on_move, on_click=on_click)
+    mouse_listener = MouseListener(on_move=on_move, on_click=on_click, on_scroll=on_scroll)
 
     # Start the listeners
     keyboard_listener.start()

@@ -2,7 +2,6 @@ import json
 import time
 
 from pynput import keyboard, mouse
-from pynput.keyboard import Controller
 from pynput.keyboard import Controller as KeyboardController
 from pynput.keyboard import Key, KeyCode
 from pynput.keyboard import Listener as KeyboardListener
@@ -69,6 +68,12 @@ def replay_events(click_speed=0.5, mouse_speed=0.02):
         elif event[0] == "m":  # Mouse movement event
             time.sleep(mouse_speed)
             mouse.position = (event[1], event[2])
+
+        elif event[0] == "sc":  # Mouse movement event
+            time.sleep(mouse_speed)
+            mouse.position = (event[1], event[2])
+            dx, dy = event[3], event[4]
+            mouse.scroll(dx, dy)
 
         elif event[0] == "c":  # Mouse click event
             time.sleep(click_speed)
