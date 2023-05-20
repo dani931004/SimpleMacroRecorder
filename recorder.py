@@ -30,9 +30,6 @@ def record():
     # Define a set to keep track of pressed modifier keys
     modifier_keys = set()
 
-    # Create a keyboard controller to send key combinations
-    keyboard_controller = Controller()
-
     def on_press(key):
         nonlocal modifier_keys
 
