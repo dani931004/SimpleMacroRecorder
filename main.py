@@ -16,6 +16,7 @@ while True:
         print("\nRecording...\n")
         record()
         os.system("clear")
+        print("Start recording...")
     elif str(answer) == "2":
         print("\nPlaying...\n")
         print("\nMouse to upper left corner to 'Stop'\n\nPlaying...\n")
