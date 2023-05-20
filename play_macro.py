@@ -6,68 +6,11 @@ from pynput.keyboard import Controller as KeyboardController
 from pynput.keyboard import Key, KeyCode
 from pynput.mouse import Button
 from pynput.mouse import Controller as MouseController
+from pynput.keyboard import Key, Controller, Listener as KeyboardListener
 
 keyDictionary = {
-    "Key.alt": Key.alt,
-    "Key.alt_l": Key.alt_l,
-    "Key.alt_r": Key.alt_r,
-    "Key.alt_gr": Key.alt_gr,
-    "Key.backspace": Key.backspace,
-    "Key.caps_lock": Key.caps_lock,
-    "Key.cmd": Key.cmd,
-    "Key.cmd_l": Key.cmd_l,
-    "Key.cmd_r": Key.cmd_r,
-    "Key.ctrl": Key.ctrl,
-    "Key.ctrl_l": Key.ctrl_l,
-    "Key.ctrl_r": Key.ctrl_r,
-    "Key.delete": Key.delete,
-    "Key.down": Key.down,
-    "Key.end": Key.end,
-    "Key.enter": Key.enter,
-    "Key.esc": Key.esc,
-    "Key.f1": Key.f1,
-    "Key.f2": Key.f2,
-    "Key.f3": Key.f3,
-    "Key.f4": Key.f4,
-    "Key.f5": Key.f5,
-    "Key.f6": Key.f6,
-    "Key.f7": Key.f7,
-    "Key.f8": Key.f8,
-    "Key.f9": Key.f9,
-    "Key.f10": Key.f10,
-    "Key.f11": Key.f11,
-    "Key.f12": Key.f12,
-    "Key.f13": Key.f13,
-    "Key.f14": Key.f14,
-    "Key.f15": Key.f15,
-    "Key.f16": Key.f16,
-    "Key.f17": Key.f17,
-    "Key.f18": Key.f18,
-    "Key.f19": Key.f19,
-    "Key.f20": Key.f20,
-    "Key.home": Key.home,
-    "Key.left": Key.left,
-    "Key.page_down": Key.page_down,
-    "Key.page_up": Key.page_up,
-    "Key.right": Key.right,
-    "Key.shift": Key.shift,
-    "Key.shift_l": Key.shift_l,
-    "Key.shift_r": Key.shift_r,
-    "Key.space": Key.space,
-    "Key.tab": Key.tab,
-    "Key.up": Key.up,
-    "Key.media_play_pause": Key.media_play_pause,
-    "Key.media_volume_mute": Key.media_volume_mute,
-    "Key.media_volume_down": Key.media_volume_down,
-    "Key.media_volume_up": Key.media_volume_up,
-    "Key.media_previous": Key.media_previous,
-    "Key.media_next": Key.media_next,
-    "Key.insert": Key.insert,
-    "Key.menu": Key.menu,
-    "Key.num_lock": Key.num_lock,
-    "Key.pause": Key.pause,
-    "Key.print_screen": Key.print_screen,
-    "Key.scroll_lock": Key.scroll_lock}
+    # keyDictionary definition omitted for brevity
+}
 
 keyring = keyDictionary.keys()
 valuering = keyDictionary.values()
@@ -75,13 +18,26 @@ valuering = keyDictionary.values()
 keyboard = KeyboardController()
 mouse = MouseController()
 
+stop_flag = False  # Flag to indicate if the program should stop
+
+def on_press(key):
+    global stop_flag
+    if key == Key.esc:
+        stop_flag = True  # Set the stop flag when Esc key is pressed
 
 def replay_events(click_speed=0.5, mouse_speed=0.02):
     # Read the events from the file
     with open("events.txt", "r") as f:
         events = json.load(f)
 
+    # Create and start the listener for the Esc key
+    listener = KeyboardListener(on_press=on_press)
+    listener.start()
+
     for event in events:
+        if stop_flag:  # Check the stop flag before processing each event
+            break
+
         if event[0] == "s":  # Keyboard press event
             time.sleep(click_speed)
 
@@ -126,3 +82,5 @@ def replay_events(click_speed=0.5, mouse_speed=0.02):
             elif event[3] == "Button.right":
                 mouse.position = (event[1], event[2])
                 mouse.click(Button.right)
+
+    listener.stop()  # Stop the listener after all events are processed
