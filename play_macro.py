@@ -21,7 +21,7 @@ def on_press(key):
         stop_flag = True  # Set the stop flag when Esc key is pressed
 
 
-def replay_events(click_speed=0.5, mouse_speed=0.02):
+def replay_events():
     # Read the events from the file
     with open("events.txt", "r") as f:
         events = json.load(f)
@@ -36,14 +36,14 @@ def replay_events(click_speed=0.5, mouse_speed=0.02):
 
         if event[0] == "s":  # Keyboard press event
             if normal_speed: # Normal speed
-                time.sleep(click_speed)
+                time.sleep(float(event[2]))
 
             if isinstance(event[1], str):  # Character key
                 keyboard.press(Key[event[1].split('.')[1]])
                 keyboard.release(Key[event[1].split('.')[1]])
 
         elif event[0] == "k":  # Press character key
-            time.sleep(mouse_speed)
+            time.sleep(float(event[2]))
             if isinstance(event[1], str):  # Character key
                 key_combination = event[1].split('+')  # Split the keys by '+'
                 keys_to_press = []
@@ -68,17 +68,17 @@ def replay_events(click_speed=0.5, mouse_speed=0.02):
                         keyboard.release(KeyCode(char=key.replace('"', '')))
 
         elif event[0] == "m":  # Mouse movement event
-            time.sleep(mouse_speed)
+            time.sleep(event[3])
             mouse.position = (event[1], event[2])
 
         elif event[0] == "sc":  # Mouse movement event
-            time.sleep(mouse_speed)
+            time.sleep(event[5])
             mouse.position = (event[1], event[2])
             dx, dy = event[3], event[4]
             mouse.scroll(dx, dy)
 
         elif event[0] == "c":  # Mouse click event
-            time.sleep(click_speed)
+            time.sleep(event[4])
             if event[3] == "Button.left":
                 mouse.position = (event[1], event[2])
                 mouse.click(Button.left)

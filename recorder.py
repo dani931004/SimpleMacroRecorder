@@ -43,6 +43,7 @@ def record():
 
         # Calculate the timestamp since the start of recording
         timestamp = time.time() - start_time
+        print(time.time())
 
         # Wait for a specific key combination to be pressed to stop recording
         if key == Key.esc:
