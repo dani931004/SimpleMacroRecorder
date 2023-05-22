@@ -43,7 +43,6 @@ def replay_events():
                 keyboard.release(Key[event[1].split('.')[1]])
 
         elif event[0] == "k":  # Press character key
-            time.sleep(float(event[2]))
             if isinstance(event[1], str):  # Character key
                 key_combination = event[1].split('+')  # Split the keys by '+'
                 keys_to_press = []
@@ -56,6 +55,8 @@ def replay_events():
                         keys_to_press.append(key.replace("'", ""))
 
                 for key in keys_to_press:
+                    time.sleep(float(event[2]))
+                    
                     if 'Key' in str(key):
                         keyboard.press(Key[key.split('.')[1]])
                     else:

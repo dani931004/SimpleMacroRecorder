@@ -2,6 +2,16 @@ from recorder import record
 from play_macro import replay_events
 from time import sleep
 import os
+import datetime
+
+# start = datetime.datetime.now()
+# sleep(2)
+# now = datetime.datetime.now()
+# stop = now - start
+# print(stop.total_seconds())
+
+
+# exit()
 
 def counter():
     print("\n3...\n")
@@ -10,7 +20,6 @@ def counter():
     sleep(1)
     print("\n1...\n")
     sleep(1)
-
 options = ["1. Record", "2. Play", "3. Exit"]
 os.system("clear")
 while True:
@@ -26,8 +35,9 @@ while True:
     elif str(answer) == "2":
         counter()
         print("\nPlaying...\n")
-        print("\nMouse to upper left corner to 'Stop'\n\nPlaying...\n")
+        print("\nEsc button to 'Stop'\n\nPlaying...\n")
         replay_events()
+        print("\nStopped playing...\n")
         continue
     else:
         print("\nEnd of program!\n")

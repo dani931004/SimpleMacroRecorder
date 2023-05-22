@@ -1,9 +1,11 @@
 import json
 import threading
 import time
+import datetime
 
 from pynput.keyboard import Key, Controller, Listener as KeyboardListener
 from pynput.mouse import Button, Listener as MouseListener
+start_time = datetime.datetime.now()
 
 class CustomButton:
     def __init__(self, label, style):
@@ -24,33 +26,39 @@ class ButtonEncoder(json.JSONEncoder):
             return obj.to_dict()
         return super().default(obj)
 
+
 def record():
     # Define a list to store the events
     events = []
 
     # Define a set to keep track of pressed modifier keys
     modifier_keys = set()
-
-    # Initialize the timestamp of the first event
-    start_time = time.time()
+    
+    
 
     def on_press(key):
         nonlocal modifier_keys
+        global start_time
 
         mod_keys = [Key.ctrl, Key.shift, Key.alt]
         # Add the pressed key to the set of pressed keys
         print("Key pressed:", key)
 
         # Calculate the timestamp since the start of recording
-        timestamp = time.time() - start_time
-        print(time.time())
+        timestamp = datetime.datetime.now() - start_time
 
         # Wait for a specific key combination to be pressed to stop recording
         if key == Key.esc:
             # Stop the listeners
             keyboard_listener.stop()
             mouse_listener.stop()
-            print("Stopped listening and recording. Please wait...")
+            
+            # Write the events to a file
+            with open("events.txt", "w") as f:
+                json.dump(events, f, cls=ButtonEncoder)
+                
+                
+            print("Stop recording...Saving file, please wait...")
             return False
 
         # Handle modifier keys (Ctrl, Shift, Alt)
@@ -62,41 +70,57 @@ def record():
         if modifier_keys:
             # Combine the modifier keys with the current key
             key_combination = ' + '.join([str(modifier) for modifier in modifier_keys]) + ' + ' + str(key)
-            events.append(("k", key_combination, timestamp))
+            events.append(("k", key_combination, timestamp.total_seconds()))
+            
+            # restart the timer for the next key
+            start_time = datetime.datetime.now()
             # Remove released modifier keys from the set
             if key not in mod_keys:
                 for key in mod_keys:
                     modifier_keys.discard(key)
         else:
             try:
-                events.append(("k", key.char, timestamp))
+                events.append(("k", key.char, timestamp.total_seconds()))
+                # restart the timer for the next key
+                start_time = datetime.datetime.now()
             except AttributeError:
                 # Convert non-literal values to strings
-                events.append(("s", str(key), timestamp))
+                events.append(("s", str(key), timestamp.total_seconds()))
+                # restart the timer for the next key
+                start_time = datetime.datetime.now()
 
-        # Write the events to a file
-        with open("events.txt", "w") as f:
-            json.dump(events, f, cls=ButtonEncoder)
 
     # Define a function to handle mouse events
     def on_move(x, y):
+        global start_time
         # Calculate the timestamp since the start of recording
-        timestamp = time.time() - start_time
+        timestamp = datetime.datetime.now() - start_time
 
-        events.append(("m", x, y, timestamp))
+        events.append(("m", x, y, timestamp.total_seconds()))
+        # restart the timer for the next key
+        start_time = datetime.datetime.now()
 
     def on_click(x, y, button, pressed):
+        global start_time
+        print("Mouse click:", button)
+        
         if pressed:
             # Calculate the timestamp since the start of recording
-            timestamp = time.time() - start_time
+            timestamp = datetime.datetime.now() - start_time
+            print("Timestamp:", timestamp.total_seconds())
 
-            events.append(("c", x, y, str(button), timestamp))
+            events.append(("c", x, y, str(button), timestamp.total_seconds()))
+            # restart the timer for the next key
+            start_time = datetime.datetime.now()
 
     def on_scroll(x, y, dx, dy):
+        global start_time
         # Calculate the timestamp since the start of recording
-        timestamp = time.time() - start_time
+        timestamp = datetime.datetime.now() - start_time
 
-        events.append(("sc", x, y, dx, dy, timestamp))
+        events.append(("sc", x, y, dx, dy, timestamp.total_seconds()))
+        # restart the timer for the next key
+        start_time = datetime.datetime.now()
 
     # Create the listener objects
     keyboard_listener = KeyboardListener(on_press=on_press)
