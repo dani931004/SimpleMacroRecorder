@@ -20,6 +20,7 @@ def counter():
     sleep(1)
     print("\n1...\n")
     sleep(1)
+
 options = ["1. Record", "2. Play", "3. Exit"]
 os.system("clear")
 while True:

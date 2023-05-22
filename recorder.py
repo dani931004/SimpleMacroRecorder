@@ -5,8 +5,6 @@ import datetime
 
 from pynput.keyboard import Key, Controller, Listener as KeyboardListener
 from pynput.mouse import Button, Listener as MouseListener
-start_time = datetime.datetime.now()
-
 class CustomButton:
     def __init__(self, label, style):
         self.label = label
@@ -26,8 +24,9 @@ class ButtonEncoder(json.JSONEncoder):
             return obj.to_dict()
         return super().default(obj)
 
-
 def record():
+    global start_time
+    start_time = datetime.datetime.now()
     # Define a list to store the events
     events = []
 
@@ -93,6 +92,7 @@ def record():
     # Define a function to handle mouse events
     def on_move(x, y):
         global start_time
+        
         # Calculate the timestamp since the start of recording
         timestamp = datetime.datetime.now() - start_time
 
