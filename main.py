@@ -37,7 +37,7 @@ while True:
         counter()
         print("\nPlaying...\n")
         print("\nEsc button to 'Stop'\n\nPlaying...\n")
-        replay_events()
+        replay_events(velocity=1)
         print("\nStopped playing...\n")
         continue
     else:
