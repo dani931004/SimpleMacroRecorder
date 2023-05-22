@@ -15,6 +15,10 @@ stop_flag = False  # Flag to indicate if the program should stop
 
 normal_speed = True # Flag to indicate what is the speed of replaying
 
+def speed(event):
+    speed = float(event[-1])
+    return speed
+
 def on_press(key):
     global stop_flag
     if key == Key.esc:
@@ -36,7 +40,7 @@ def replay_events():
 
         if event[0] == "s":  # Keyboard press event
             if normal_speed: # Normal speed
-                time.sleep(float(event[2]))
+                time.sleep(speed(event))
 
             if isinstance(event[1], str):  # Character key
                 keyboard.press(Key[event[1].split('.')[1]])
@@ -55,7 +59,7 @@ def replay_events():
                         keys_to_press.append(key.replace("'", ""))
 
                 for key in keys_to_press:
-                    time.sleep(float(event[2]))
+                    time.sleep(speed(event))
                     
                     if 'Key' in str(key):
                         keyboard.press(Key[key.split('.')[1]])
@@ -69,17 +73,17 @@ def replay_events():
                         keyboard.release(KeyCode(char=key.replace('"', '')))
 
         elif event[0] == "m":  # Mouse movement event
-            time.sleep(event[3])
+            time.sleep(speed(event))
             mouse.position = (event[1], event[2])
 
         elif event[0] == "sc":  # Mouse movement event
-            time.sleep(event[5])
+            time.sleep(speed(event))
             mouse.position = (event[1], event[2])
             dx, dy = event[3], event[4]
             mouse.scroll(dx, dy)
 
         elif event[0] == "c":  # Mouse click event
-            time.sleep(event[4])
+            time.sleep(speed(event))
             if event[3] == "Button.left":
                 mouse.position = (event[1], event[2])
                 mouse.click(Button.left)

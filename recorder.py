@@ -40,8 +40,6 @@ def record():
         global start_time
 
         mod_keys = [Key.ctrl, Key.shift, Key.alt]
-        # Add the pressed key to the set of pressed keys
-        print("Key pressed:", key)
 
         # Calculate the timestamp since the start of recording
         timestamp = datetime.datetime.now() - start_time
@@ -102,12 +100,10 @@ def record():
 
     def on_click(x, y, button, pressed):
         global start_time
-        print("Mouse click:", button)
         
         if pressed:
             # Calculate the timestamp since the start of recording
             timestamp = datetime.datetime.now() - start_time
-            print("Timestamp:", timestamp.total_seconds())
 
             events.append(("c", x, y, str(button), timestamp.total_seconds()))
             # restart the timer for the next key
