@@ -25,7 +25,7 @@ def on_press(key):
         stop_flag = True  # Set the stop flag when Esc key is pressed
 
 
-def replay_events(velocity=3):
+def replay_events(velocity=1):
     # Read the events from the file
     with open("events.txt", "r") as f:
         events = json.load(f)
