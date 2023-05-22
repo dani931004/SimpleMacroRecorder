@@ -25,70 +25,72 @@ def on_press(key):
         stop_flag = True  # Set the stop flag when Esc key is pressed
 
 
-def replay_events(velocity=1):
-    # Read the events from the file
-    with open("events.txt", "r") as f:
-        events = json.load(f)
+def replay_events(velocity=1, replay_times=1):
+    while replay_times >= 1:
+        # Read the events from the file
+        with open("events.txt", "r") as f:
+            events = json.load(f)
 
-    # Create and start the listener for the Esc key
-    listener = KeyboardListener(on_press=on_press)
-    listener.start()
+        # Create and start the listener for the Esc key
+        listener = KeyboardListener(on_press=on_press)
+        listener.start()
 
-    for event in events:
-        if stop_flag:  # Check the stop flag before processing each event
-            break
+        for event in events:
+            if stop_flag:  # Check the stop flag before processing each event
+                break
 
-        if event[0] == "s":  # Keyboard press event
-            if normal_speed: # Normal speed
-                time.sleep(speed(event, velocity))
-
-            if isinstance(event[1], str):  # Character key
-                keyboard.press(Key[event[1].split('.')[1]])
-                keyboard.release(Key[event[1].split('.')[1]])
-
-        elif event[0] == "k":  # Press character key
-            if isinstance(event[1], str):  # Character key
-                key_combination = event[1].split('+')  # Split the keys by '+'
-                keys_to_press = []
-
-                for key in key_combination:
-                    key = key.strip()  # Remove whitespace
-                    if 'Key' in key:
-                        keys_to_press.append(key)
-                    else:
-                        keys_to_press.append(key.replace("'", ""))
-
-                for key in keys_to_press:
+            if event[0] == "s":  # Keyboard press event
+                if normal_speed: # Normal speed
                     time.sleep(speed(event, velocity))
-                    
-                    if 'Key' in str(key):
-                        keyboard.press(Key[key.split('.')[1]])
-                    else:
-                        keyboard.press(KeyCode(char=key.replace('"', '')))
 
-                for key in reversed(keys_to_press):
-                    if 'Key' in str(key):
-                        keyboard.release(Key[key.split('.')[1]])
-                    else:
-                        keyboard.release(KeyCode(char=key.replace('"', '')))
+                if isinstance(event[1], str):  # Character key
+                    keyboard.press(Key[event[1].split('.')[1]])
+                    keyboard.release(Key[event[1].split('.')[1]])
 
-        elif event[0] == "m":  # Mouse movement event
-            time.sleep(speed(event, velocity))
-            mouse.position = (event[1], event[2])
+            elif event[0] == "k":  # Press character key
+                if isinstance(event[1], str):  # Character key
+                    key_combination = event[1].split('+')  # Split the keys by '+'
+                    keys_to_press = []
 
-        elif event[0] == "sc":  # Mouse movement event
-            time.sleep(speed(event, velocity))
-            mouse.position = (event[1], event[2])
-            dx, dy = event[3], event[4]
-            mouse.scroll(dx, dy)
+                    for key in key_combination:
+                        key = key.strip()  # Remove whitespace
+                        if 'Key' in key:
+                            keys_to_press.append(key)
+                        else:
+                            keys_to_press.append(key.replace("'", ""))
 
-        elif event[0] == "c":  # Mouse click event
-            time.sleep(speed(event, velocity))
-            if event[3] == "Button.left":
+                    for key in keys_to_press:
+                        time.sleep(speed(event, velocity))
+                        
+                        if 'Key' in str(key):
+                            keyboard.press(Key[key.split('.')[1]])
+                        else:
+                            keyboard.press(KeyCode(char=key.replace('"', '')))
+
+                    for key in reversed(keys_to_press):
+                        if 'Key' in str(key):
+                            keyboard.release(Key[key.split('.')[1]])
+                        else:
+                            keyboard.release(KeyCode(char=key.replace('"', '')))
+
+            elif event[0] == "m":  # Mouse movement event
+                time.sleep(speed(event, velocity))
                 mouse.position = (event[1], event[2])
-                mouse.click(Button.left)
-            elif event[3] == "Button.right":
-                mouse.position = (event[1], event[2])
-                mouse.click(Button.right)
 
-    listener.stop()  # Stop the listener after all events are processed
+            elif event[0] == "sc":  # Mouse movement event
+                time.sleep(speed(event, velocity))
+                mouse.position = (event[1], event[2])
+                dx, dy = event[3], event[4]
+                mouse.scroll(dx, dy)
+
+            elif event[0] == "c":  # Mouse click event
+                time.sleep(speed(event, velocity))
+                if event[3] == "Button.left":
+                    mouse.position = (event[1], event[2])
+                    mouse.click(Button.left)
+                elif event[3] == "Button.right":
+                    mouse.position = (event[1], event[2])
+                    mouse.click(Button.right)
+
+        listener.stop()  # Stop the listener after all events are processed
+        replay_times -= 1
