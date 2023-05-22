@@ -15,9 +15,9 @@ stop_flag = False  # Flag to indicate if the program should stop
 
 normal_speed = True # Flag to indicate what is the speed of replaying
 
-def speed(event):
-    speed = float(event[-1])
-    return speed
+def speed(event, velocity=1):
+    speed = float(event[-1]) / velocity
+    return speed 
 
 def on_press(key):
     global stop_flag
@@ -25,7 +25,7 @@ def on_press(key):
         stop_flag = True  # Set the stop flag when Esc key is pressed
 
 
-def replay_events():
+def replay_events(velocity=3):
     # Read the events from the file
     with open("events.txt", "r") as f:
         events = json.load(f)
@@ -40,7 +40,7 @@ def replay_events():
 
         if event[0] == "s":  # Keyboard press event
             if normal_speed: # Normal speed
-                time.sleep(speed(event))
+                time.sleep(speed(event, velocity))
 
             if isinstance(event[1], str):  # Character key
                 keyboard.press(Key[event[1].split('.')[1]])
@@ -59,7 +59,7 @@ def replay_events():
                         keys_to_press.append(key.replace("'", ""))
 
                 for key in keys_to_press:
-                    time.sleep(speed(event))
+                    time.sleep(speed(event, velocity))
                     
                     if 'Key' in str(key):
                         keyboard.press(Key[key.split('.')[1]])
@@ -73,17 +73,17 @@ def replay_events():
                         keyboard.release(KeyCode(char=key.replace('"', '')))
 
         elif event[0] == "m":  # Mouse movement event
-            time.sleep(speed(event))
+            time.sleep(speed(event, velocity))
             mouse.position = (event[1], event[2])
 
         elif event[0] == "sc":  # Mouse movement event
-            time.sleep(speed(event))
+            time.sleep(speed(event, velocity))
             mouse.position = (event[1], event[2])
             dx, dy = event[3], event[4]
             mouse.scroll(dx, dy)
 
         elif event[0] == "c":  # Mouse click event
-            time.sleep(speed(event))
+            time.sleep(speed(event, velocity))
             if event[3] == "Button.left":
                 mouse.position = (event[1], event[2])
                 mouse.click(Button.left)
